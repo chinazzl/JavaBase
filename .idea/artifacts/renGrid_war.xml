@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="renGrid:war">
+    <output-path>$PROJECT_DIR$/renGrid/target</output-path>
+    <root id="archive" name="renGrid.war">
+      <element id="artifact" artifact-name="renGrid:war exploded" />
+    </root>
+  </artifact>
+</component>
