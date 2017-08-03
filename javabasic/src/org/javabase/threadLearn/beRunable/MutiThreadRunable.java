@@ -1,4 +1,4 @@
-package org.javabase.beRunable;
+package org.javabase.threadLearn.beRunable;
 
 /**
  * Created by Felix on 2017/7/31.
