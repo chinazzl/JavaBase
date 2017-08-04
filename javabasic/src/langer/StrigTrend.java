@@ -27,4 +27,15 @@ public class StrigTrend {
         s1 = s2;
         s2 = s1+s2;
     }
+    public static void change() {
+    }
+
+    private String name;
+
+    public  StrigTrend(){
+
+    }
+    public StrigTrend(String name) {
+        this.name = name;
+    }
 }
