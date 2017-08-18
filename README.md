@@ -1,3 +1,10 @@
+# SpringBoot
+
+Spirng Boot 自定义初始化控制台展示图形界面
+* 使用的是Spring Boot 中的banner
+* SpringBoot 1.3.5版本以上已经禁用`spring.main.show-banner=true`
+* 在`resource`文件夹下面创建一个`banner.txt` 文件里面放你要展示的字符
+
 # JavaBase
 ### javabasic
 
