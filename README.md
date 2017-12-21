@@ -5,6 +5,35 @@ Spirng Boot 自定义初始化控制台展示图形界面
 * SpringBoot 1.3.5版本以上已经禁用`spring.main.show-banner=true`
 * 在`resource`文件夹下面创建一个`banner.txt` 文件里面放你要展示的字符
 
+**SpringBoot之JPA**
+
+```xml
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+```
+- JPA测试
+
+```java
+    //注入Entity Manager，类似Hibernate的session和Mybatis的SqlSession 
+   @RunWith(SpringJUnit4ClassRunner.class)
+   @SpringBootTest(classes = Runner.class)
+   public class JpaTest {
+    @Autowired
+    private EntityManager entityManager;
+    @Test
+    public void findStuById(){
+       String sql = "select sid,sname,sage,email,time,endtime,ssex from stu";
+        Query query = entityManager.createNativeQuery(sql, Student.class);
+        List<Student> resultList = query.getResultList();
+        for (int i = 0; i < resultList.size(); i++) {
+            System.out.println("学生：" + resultList.get(i).getStuName());
+        }
+
+    }
+   }
+```
 # JavaBase
 ### javabasic
 
@@ -59,5 +88,6 @@ Spirng Boot 自定义初始化控制台展示图形界面
 - 首先当前线程的类加载器去加载线程中的第一个类
 - 如果类A应用了类B，java虚拟机将使用加载类A的类加载器来加载类B
 - 还可以直接调用ClassLoader.loadClass()方法来制定某个类加载器去加载某个类
+
 
 
