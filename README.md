@@ -13,6 +13,23 @@ Spirng Boot 自定义初始化控制台展示图形界面
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 ```
+- 配置application.properties
+
+```properties
+# 配置数据源
+spring.datasource.url=jdbc:mysql://localhost:3306/test
+spring.datasource.username=root
+spring.datasource.password=password
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+# 配置JPA
+# 自动创建，更新，验证数据库表结构
+spring.jpa.properties.hibernate.hbm2ddl.auto=update
+# 指生成表名的存储引擎为InnoDB
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+# 是否打印出自动生产的SQL，方便调试的时候查看
+spring.jpa.show-sql=true
+```
 - JPA测试
 
 ```java
@@ -33,6 +50,33 @@ Spirng Boot 自定义初始化控制台展示图形界面
 
     }
    }
+```
+- JPA 进行本地查询
+
+ - 自定义接口
+ ```java
+    @Repository
+    public interface StuRepostiry extends JpaRepository<Student,Integer> {
+    
+        @Query(value = "select sname from stu where sid = ?1",nativeQuery = true)
+        List<Object[]> findStudentById(int id);
+    }
+```
+- 测试
+```java
+//注入Entity Manager，类似Hibernate的session和Mybatis的SqlSession 
+   @RunWith(SpringJUnit4ClassRunner.class)
+   @SpringBootTest(classes = Runner.class)
+   public class JpaTest {
+    @Autowired
+    private EntityManager entityManager;
+   @Test
+       public void findStuByIds(){
+           List<Object[]> list = stuRepostiry.findStudentById(1);
+           System.out.println(list.get(0));
+       }
+   }
+
 ```
 # JavaBase
 ### javabasic

@@ -2,6 +2,8 @@ package org.my.booter.dao;
 
 import org.my.booter.vo.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +11,9 @@ import java.util.List;
 /**
  * Created by Felix on 2017/12/20.
  */
-@Service
+@Repository
 public interface StuRepostiry extends JpaRepository<Student,Integer> {
 
+    @Query(value = "select sname from stu where sid = ?1",nativeQuery = true)
+    List<Object[]> findStudentById(int id);
 }
