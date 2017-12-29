@@ -59,6 +59,6 @@ public class JpaTest {
 
     @Test
     public  void newEvir(){
-
+        System.out.println();
     }
 }
