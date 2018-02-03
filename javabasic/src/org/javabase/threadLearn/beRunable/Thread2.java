@@ -18,7 +18,7 @@ public class Thread2 {
             主线程等待子线程终止，才能执行join()后面的代码
          */
         thread1.join();
-        thread2.join();
+//        thread2.join();
         System.out.println(Thread.currentThread().getName() + "线程终止");
 
     }

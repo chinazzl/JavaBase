@@ -5,6 +5,7 @@ package org.javabase.threadLearn;
  */
 public class DemoTest {
     public static void main(String[] args) {
+
         ExtendThread thread1 = new ExtendThread("A");
         ExtendThread thread2 = new ExtendThread("B");
         thread1.start();

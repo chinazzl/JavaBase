@@ -4,6 +4,7 @@ package org.javabase.threadLearn;
  * Created by Felix on 2017/7/31.
  */
 public class ExtendThread extends Thread {
+
     private String name;
 
     public ExtendThread(String name) {

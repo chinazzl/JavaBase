@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/JavaBase.iml" filepath="$PROJECT_DIR$/JavaBase.iml" />
       <module fileurl="file://$PROJECT_DIR$/bootDmo/bootDmo.iml" filepath="$PROJECT_DIR$/bootDmo/bootDmo.iml" />
       <module fileurl="file://$PROJECT_DIR$/javabasic/javabasic.iml" filepath="$PROJECT_DIR$/javabasic/javabasic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jump/jump.iml" filepath="$PROJECT_DIR$/jump/jump.iml" />
     </modules>
   </component>
 </project>
