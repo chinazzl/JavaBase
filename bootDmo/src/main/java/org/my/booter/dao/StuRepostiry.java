@@ -21,6 +21,6 @@ public interface StuRepostiry extends JpaRepository<Student,Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "update stu set image = ?1 where sid = 1",nativeQuery = true)
-    String uploadImage(String originalFilename);
+    @Query(value = "insert into stu(sid,imageurl) VALUES (SEQ_STU.NEXTVAL,?1)",nativeQuery = true)
+    void uploadImage(String originalFilename);
 }

@@ -12,16 +12,17 @@ package langer;
  */
 public class Test {
 
+
     public static void main(String[] args) {
         int i =1;
-        change(i);
-        System.out.println("i: " + i);
+        change(i);//2
+        System.out.println("i: " + i);//1
         String str = "2";
         StringBuffer sb = new StringBuffer("3");
-        change(str);
-        change(sb);
+        change(str);//s1
+        change(sb);//sb3
         System.out.println("sb: " + sb);
-        System.out.println("str" + str);
+        System.out.println("str: " + str);
     }
 
     private static void change(int i) {
