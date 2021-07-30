@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
  * Created by Felix on 2017/7/7.
  */
 @SpringBootApplication
-@ComponentScan
 public class Runner extends SpringBootServletInitializer {
 
 

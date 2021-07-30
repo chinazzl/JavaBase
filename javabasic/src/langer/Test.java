@@ -1,5 +1,7 @@
 package langer;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Felix on 2017/8/4.
  * Java中参数传递的都是值,对应基本类型,传递的是原值的拷贝;对于类类型,传递的是引用即地址的拷贝.
@@ -12,17 +14,21 @@ package langer;
  */
 public class Test {
 
-
+   static transient long i;
     public static void main(String[] args) {
-        int i =1;
-        change(i);//2
-        System.out.println("i: " + i);//1
-        String str = "2";
-        StringBuffer sb = new StringBuffer("3");
-        change(str);//s1
-        change(sb);//sb3
-        System.out.println("sb: " + sb);
-        System.out.println("str: " + str);
+//        int i =1;
+//        change(i);//2
+//        System.out.println("i: " + i);//1
+//        String str = "2";
+//        StringBuffer sb = new StringBuffer("3");
+//        change(str);//s1
+//        change(sb);//sb3
+//        System.out.println("sb: " + sb);
+//        System.out.println("str: " + str);
+        BigDecimal b1= new BigDecimal(1.0);
+        BigDecimal b2= new BigDecimal(1.01);
+        System.out.println(b1.compareTo(b2));
+        System.out.println(i);
     }
 
     private static void change(int i) {

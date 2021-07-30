@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="learnLogger:war">
+    <output-path>$PROJECT_DIR$/learnLogger/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>learnLogger</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="learnLogger.war">
+      <element id="artifact" artifact-name="learnLogger:war exploded" />
+    </root>
+  </artifact>
+</component>

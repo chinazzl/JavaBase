@@ -1,5 +1,6 @@
 package org.javabase.threadLearn;
 
+import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -9,7 +10,7 @@ import java.util.TimerTask;
  */
 public class SendThreadDemmo {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
 
         String[] str1 = new String[6];
         str1[0] = "a";
@@ -18,13 +19,14 @@ public class SendThreadDemmo {
          aa:    for(int i = 0; i < 3; i++) {
              try{
                  String s1 = str1[i];
+                 int j = i;
                  final Timer timer = new Timer();
                  timer.schedule(
                          new TimerTask() {
                              private int count = 0;
                              @Override
                              public void run() {
-                                 System.out.println("str1:" + s1.toString());
+                                 System.out.println("str"+j+":" + s1.toString());
                                  count+=1;
                                  System.out.println("====count= " + count);
                                  if(count == 50){
@@ -33,7 +35,7 @@ public class SendThreadDemmo {
                                  }
                              }
                          }
-                 ,10000,2000);
+                 ,1000,2000);
                  System.out.println("//////s2= " +s1);
              }catch (Exception e){
                  e.printStackTrace();

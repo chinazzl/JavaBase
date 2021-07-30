@@ -1,0 +1,115 @@
+WITH CORRECT_DET AS
+ (SELECT
+COUNTRY.CITY_NAME CTNAME,
+         COUNTRY.CONTRY_NAME CTDVNAME,
+         REL.DIM_VALUE_NAME EDNAME,
+         ${#p1}
+         COUNTRY.CITY_NO
+    FROM ${TABLENAME} D
+   ${CORRECT_DET_TABLE}
+   INNER JOIN SP_DIM_VALUE_INFO REL
+      ON D.ORG_NO = REL.DIM_VALUE_CODE
+     AND REL.DIM_CODE = '0E0001'
+   INNER JOIN SP_DIM_VALUE_INFO PRO_ORG
+      ON D.PRO_ORG_NO = PRO_ORG.DIM_VALUE_CODE
+     AND PRO_ORG.DIM_CODE = '0E0001'
+    LEFT JOIN (SELECT CASE
+                       WHEN CONTRY_RELA.TOP_DIM_VALUE_CODE =
+                            CONTRY_RELA.DIM_VALUE_CODE AND
+                            CONTRY_RELA.DIM_VALUE_CODE LIKE '%A' THEN
+                        SUBSTR(CONTRY_RELA.DIM_VALUE_CODE,
+                               1,
+                               INSTR('A', CONTRY_RELA.DIM_VALUE_CODE) - 1)
+                       ELSE
+                        CONTRY_RELA.DIM_VALUE_CODE
+                     END ORG_NO,
+                     CONTRY_NO.DIM_VALUE_NAME CONTRY_NAME,
+                     CITY_NO.DIM_VALUE_NAME CITY_NAME,
+                     CITY_NO.DIM_VALUE_CODE CITY_NO
+                FROM (SELECT DIM_VALUE_CODE
+                        FROM SP_DIM_VALUE_INFO
+                       WHERE EXTEND_1 = '02'
+                         AND DIM_CODE = '0E0001') PRO_ORG,
+                     SP_DIM_VALUE_INFO CITY_NO,
+                     SP_DIM_VALUE_INFO CONTRY_NO,
+                     SP_DIM_VALUE_REL CONTRY_RELA
+               WHERE CITY_NO.P_DIM_VALUE = PRO_ORG.DIM_VALUE_CODE
+                 AND CITY_NO.DIM_CODE = '0E0007'
+                 AND CITY_NO.P_DIM_VALUE <> CITY_NO.DIM_VALUE_CODE
+                 AND CONTRY_NO.P_DIM_VALUE = CITY_NO.DIM_VALUE_CODE
+                 AND CONTRY_NO.DIM_CODE = '0E0007'
+                 AND CONTRY_NO.P_DIM_VALUE <> CONTRY_NO.DIM_VALUE_CODE
+                 AND CONTRY_RELA.TOP_DIM_VALUE_CODE =
+                     CONTRY_NO.DIM_VALUE_CODE
+                 AND CONTRY_RELA.DIM_CODE = '0E0007') COUNTRY
+      ON COUNTRY.ORG_NO = D.ORG_NO
+   WHERE EXISTS
+   (SELECT 1
+            FROM SP_DIM_VALUE_REL ORG_RELA
+           WHERE D.ORG_NO = (CASE
+                WHEN ORG_RELA.TOP_DIM_VALUE_CODE = ORG_RELA.DIM_VALUE_CODE AND
+                        ORG_RELA.TOP_DIM_VALUE_CODE LIKE '%A' THEN
+                    SUBSTR(ORG_RELA.DIM_VALUE_CODE,
+                           1,
+                           INSTR(ORG_RELA.DIM_VALUE_CODE, 'A', 1) - 1)
+                   ELSE
+                    ORG_RELA.DIM_VALUE_CODE
+                 END)
+             AND ORG_RELA.DIM_CODE = '0E0007'
+             AND ORG_RELA.TOP_DIM_VALUE_CODE =
+                 SUBSTR(#paraList#, 1, INSTR(#paraList#, '#', 1, 1) - 1))
+   ${SEARCHPARAM}
+     AND D.STAT_DATE = SUBSTR(#paraList#,
+                              INSTR(#paraList#, '#', 1, 2) + 1,
+                              INSTR(#paraList#, '#', 1, 3) - 1 -
+                              INSTR(#paraList#, '#', 1, 2))
+     AND D.ERROR_ID = NVL(NULLIF(UPPER(SUBSTR(#paraList#,
+                                              INSTR(#paraList#, '#', 1, 9) + 1,
+                                              INSTR(#paraList#, '#', 1, 10) - 1 -
+                                              INSTR(#paraList#, '#', 1, 9))),
+                                 'NULL'),
+                          D.ERROR_ID)
+     AND D.APP_NO = NVL(NULLIF(UPPER(SUBSTR(#paraList                                         INSTR(#parR(#paraList#, '#', 1, 7) + 1,
+   aList#, '#', 1, 8) - 1 -
+                                            INSTR(#paraList#, '#', 1, 7))),
+                               'NULL'),
+                        D.APP_NO)
+)
+SELECT ${RESULTSEARCH}
+       DATA_DET.ERROR_ID
+  FROM (SELECT AA1.SUB_NO,
+               AA1.STAT_DATE,
+               AA1.SUB_CRUX_INFO,
+               AA1.ERROR_ID MAX_ERROR_ID,
+               NVL(CC1.ERROR_ID, 0) MAX_APP_ERROR_ID
+          FROM DW_SUB_ERROR_CRUX_DET_YM AA1
+          LEFT JOIN SP_DIM_VALUE_REL VAL_REL1
+            ON AA1.ORG_NO = VAL_REL1.DIM_VALUE_CODE
+           AND VAL_REL1.DIM_CODE = '0E0001'
+           AND VAL_REL1.TOP_DIM_VALUE_CODE =
+               SUBSTR(#paraList#, 1, INSTR(#paraList#, '#', 1, 1) - 1)
+          LEFT JOIN BH_SG_TASK_WKST_EXCP_LIST CC1
+            ON AA1.SUB_NO = CC1.TOPIC_CODE
+           AND AA1.STAT_DATE = CC1.STAT_CYCLE
+           AND AA1.ERROR_ID = CC1.ERROR_ID
+           AND CC1.GEN_SN = 1
+         WHERE EXISTS (SELECT 1
+                  FROM P_SUB_INFO SUB_INFO1
+                 WHERE SUB_INFO1.SUB_NO = AA1.SUB_NO
+                   AND SUB_INFO1.SUB_SCOPE >= '02')
+           AND AA1.SUB_NO =
+               SUBSTR(#paraList#,
+                      INSTR(#paraList#, '#', 1, 10) + 1,
+                      INSTR(#paraList#, '#', 1, 11) - 1 -
+                      INSTR(#paraList#, '#', 1, 10))) TMP_A
+ INNER JOIN CORRECT_DET DATA_DET
+    ON TMP_A.MAX_ERROR_ID = DATA_DET.ERROR_ID
+   AND TMP_A.STAT_DATE = DATA_DET.STAT_DATE
+ WHERE NOT EXISTS (SELECT 1
+          FROM BH_SG_SUB_SUBMIT_DET BB
+         WHERE TMP_A.SUB_NO = BB.TOPIC_CODE
+           AND TMP_A.MAX_ERROR_ID = BB.ERROR_ID
+           AND TMP_A.STAT_DATE = BB.STAT_DATE)
+   AND TMP_A.MAX_APP_ERROR_ID = 0
+   AND TMP_A.MAX_ERROR_ID >= 1
+ ORDER BY DATA_DET.ERROR_ID

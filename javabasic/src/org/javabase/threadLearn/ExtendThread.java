@@ -17,6 +17,7 @@ public class ExtendThread extends Thread {
             try {
                 sleep(1000);
                 System.out.println(name + "运行" + i);
+                System.out.println(this.isDaemon());
             }catch (InterruptedException e) {
                 e.printStackTrace();
             }
