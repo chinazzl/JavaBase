@@ -9,15 +9,15 @@ package langer.StringPac;
 public class Jvm4String {
 
     public static void main(String[] args) {
-//        test1();
+        test1();
 
 //        test2();
-        String  a = "test";
+     /*   String  a = "test";
 
         String b = new String("test");
 
         System.out.println( a == b.intern());
-        System.out.println( a == b);
+        System.out.println( a == b);*/
 //        test3();
     }
 

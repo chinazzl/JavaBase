@@ -11,5 +11,14 @@
     <orderEntry type="library" name="ojdbc6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.3.8.RELEASE" level="project" />
     <orderEntry type="library" name="commons-io-2.4" level="project" />
+    <orderEntry type="library" name="cglib-2.2.2" level="project" />
+    <orderEntry type="library" name="cglib-2.1_3" level="project" />
+    <orderEntry type="library" name="asm-3.2" level="project" />
+    <orderEntry type="library" name="asm-commons-3.2" level="project" />
+    <orderEntry type="library" name="asm-util-3.2" level="project" />
+    <orderEntry type="library" name="asm-analysis-3.2" level="project" />
+    <orderEntry type="library" name="asm-tree-3.2" level="project" />
+    <orderEntry type="library" name="asm-4.0" level="project" />
+    <orderEntry type="library" name="asm-all-5.1" level="project" />
   </component>
 </module>
