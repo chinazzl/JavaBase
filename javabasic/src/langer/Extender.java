@@ -55,9 +55,14 @@ public class Extender {
         teachers.add(t);
         System.out.println(updateEmplyee(teachers));
 
+        //泛型的下限 代表只能是emplyee 的本身或者子类
+        List<? super emplyee> l = new ArrayList<>();
+        l.add(coder);
+        l.add(t);
 
     }
 
+    //<? extends emplyee> 代表泛型的上限，如果放在 定义的时候则会报错
     public static emplyee updateEmplyee(List<? extends emplyee> list) {
         return list.get(0);
     }

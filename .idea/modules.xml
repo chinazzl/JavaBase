@@ -11,7 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/learn_logBack/learn_logBack.iml" filepath="$PROJECT_DIR$/learn_logBack/learn_logBack.iml" />
       <module fileurl="file://$PROJECT_DIR$/shiroLearnRealm/shiroLearnRealm.iml" filepath="$PROJECT_DIR$/shiroLearnRealm/shiroLearnRealm.iml" />
       <module fileurl="file://$PROJECT_DIR$/slf_Learn/slf_Learn.iml" filepath="$PROJECT_DIR$/slf_Learn/slf_Learn.iml" />
-      <module fileurl="file://$PROJECT_DIR$/springmvcDefinate/springmvcDefinate.iml" filepath="$PROJECT_DIR$/springmvcDefinate/springmvcDefinate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcode/springcode.iml" filepath="$PROJECT_DIR$/springcode/springcode.iml" />
       <module fileurl="file://$PROJECT_DIR$/wwj_concurrentLearn/wwj_concurrentLearn.iml" filepath="$PROJECT_DIR$/wwj_concurrentLearn/wwj_concurrentLearn.iml" />
     </modules>
   </component>

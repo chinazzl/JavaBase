@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="asm-util-3.2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/javabasic/lib/asm-util-3.2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

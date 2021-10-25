@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="byte-buddy-1.6.5">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Desktop/JavaToolz/byte-buddy-1.6.5.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/JavaToolz/byte-buddy-agent-1.6.5.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/JavaToolz/objenesis-2.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
