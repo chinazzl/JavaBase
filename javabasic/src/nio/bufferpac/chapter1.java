@@ -1,5 +1,7 @@
 package nio.bufferpac;
 
+import java.nio.*;
+
 /**
  * @author zhangzhaolin
  * @version V1.0
@@ -26,6 +28,23 @@ public class chapter1 {
         // char类型 2个字节 16位 Unicode 字符
         char[] chars = new char[]{'a', 'b', 'c', 'd'};
 
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        ShortBuffer shortBuffer = ShortBuffer.wrap(shorts);
+        IntBuffer intBuffer = IntBuffer.wrap(ints);
+        DoubleBuffer doubleBuffer = DoubleBuffer.wrap(doubles);
+        FloatBuffer floatBuffer = FloatBuffer.wrap(floats);
+        LongBuffer longBuffer = LongBuffer.wrap(longs);
+        CharBuffer charBuffer = CharBuffer.wrap(chars);
+
+        System.out.println(byteBuffer.getClass().getName());
+        System.out.println(shortBuffer.getClass().getName());
+        System.out.println(intBuffer.getClass().getName());
+        System.out.println(doubleBuffer.getClass().getName());
+        System.out.println(floatBuffer.getClass().getName());
+        System.out.println(longBuffer.getClass().getName());
+        System.out.println(charBuffer.getClass().getName());
+
+        System.out.println(byteBuffer.capacity());
 
     }
 }
