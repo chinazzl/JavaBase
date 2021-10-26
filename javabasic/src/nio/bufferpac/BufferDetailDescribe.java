@@ -30,6 +30,12 @@ public class BufferDetailDescribe {
 //        charBuffer.limit(100);
         //4. 如果定义了mark，则在将position或limit调整 小于该mark的值时，该mark 被丢弃；
         markAndLimit(charBuffer);
+        //5. 如果未定义 mark，那么 调用reset方法将导致 异常
+        //6. 如果 position 大于新的limit，则 position 的值就是新limit值
+        charBuffer.position(3);
+        charBuffer.limit(2);
+        System.out.println("buffer capacity => " + charBuffer.capacity() + "; limit => " + charBuffer.limit() + "; position => " + charBuffer.position());
+
     }
 
     /**
@@ -86,7 +92,6 @@ public class BufferDetailDescribe {
         } catch (Exception e) {
             System.out.println("buffer 在" + buffer.position() + "的位置上 limit调整为小于该mark的值时 调用reset方法，设置 mark 标记, mark 丢弃");
         }
-
     }
 
 }
