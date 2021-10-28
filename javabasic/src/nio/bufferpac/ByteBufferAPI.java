@@ -1,6 +1,9 @@
 package nio.bufferpac;
 
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author zhangzhaolin
@@ -14,7 +17,82 @@ public class ByteBufferAPI {
 
     public static void main(String[] args) {
 //        buildByteBuffer();
-        api_putOrGet();
+//        api_putOrGet();
+//        api_putType();
+//        api_slice();
+        api_asCharBuffer();
+    }
+
+    /**
+     * asCharBuffer 创建此字节缓冲区的视图，这两个缓冲区的位置、限制和标记值是相互独立的，
+     * 新缓冲区的内容从此缓冲区的当前位置开始，新缓冲区的位置将为0，容量和限制将为此缓冲区所剩余的字节数的1/2
+     * asDoubleBuffer() asLongBuffer() asFloatBuffer() asDoubleBuffer asIntBuffer() asShortBuffer()
+     */
+    private static void api_asCharBuffer() {
+        //直接定义 编码格式
+        byte[] bytes = "I lulu".getBytes(StandardCharsets.UTF_8);
+        //运行本代码*.java 文件是 UTF-8， System.getProperty("file.encoding") 运行环境取得默认是UTF-8
+        System.out.println(Charset.defaultCharset().name());
+        ByteBuffer wrap = ByteBuffer.wrap(bytes);
+//        wrap.position(1);
+        System.out.println("byteBuffer = " + wrap.getClass().getName());
+        CharBuffer charBuffer = wrap.asCharBuffer();
+        System.out.println("charBuffer = " + charBuffer.getClass().getName());
+        System.out.println("wrap capacity is " + wrap.capacity() + ", limit is " + wrap.limit() + ", position is " + wrap.position());
+        System.out.println("charBuffer capacity is " + charBuffer.capacity() + ", limit is " + charBuffer.limit() + ", position is " + charBuffer.position());
+        charBuffer.position(0);
+        for (int i = 0; i < charBuffer.capacity(); i++) {
+            //get() 使用的编码是UTF-16BE 编码并不对称造成 乱码
+            System.out.print(charBuffer.get() + "");
+
+        }
+
+    }
+
+    /**
+     * slice()：创建新的字节缓冲区，内容是此缓冲区内容的共享子序列
+     * 这两个缓冲区 的位置、限制和标记值是相互独立的。
+     */
+    private static void api_slice() {
+        byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        byteBuffer.position(5);
+        ByteBuffer sliceBuffer = byteBuffer.slice();
+        System.out.println("byteBuffer capacity is " + byteBuffer.capacity() + ", limit is " + byteBuffer.limit() + ", position is " + byteBuffer.position());
+        System.out.println("sliceBuffer capacity is " + sliceBuffer.capacity() + ", limit is " + sliceBuffer.limit() + ", position is " + sliceBuffer.position());
+        sliceBuffer.put(0, (byte) 111);
+        byte[] bytes1 = byteBuffer.array();
+        byte[] bytes2 = sliceBuffer.array();
+        for (int i = 0; i < bytes1.length; i++) {
+            System.out.print(bytes1[i] + ", ");
+        }
+        System.out.println();
+        for (int i = 0; i < bytes2.length; i++) {
+            System.out.print(bytes2[i] + ", ");
+        }
+        // sliceBuffer 的第一个元素的位置 是 相对于 bytes 数组中索引值为5 的偏移
+        System.out.println("slice buffer array offset => " + sliceBuffer.arrayOffset());
+    }
+
+    /**
+     * putChar() putShort() putInt() putLong() putFloat() putDouble()
+     */
+    private static void api_putType() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+        // char 占用2个字节 0-1
+        byteBuffer.putChar('a');
+        byteBuffer.putChar(2, 'b');
+        byteBuffer.position(4);
+        // double 占用 8个字节 4 -11
+        byteBuffer.putDouble(2.2);
+        //12-19
+        byteBuffer.putDouble(12, 1.1);
+
+        for (int i = 0; i < byteBuffer.array().length; i++) {
+            System.out.println(byteBuffer.array()[i] + ", ");
+        }
+        System.out.println(byteBuffer.getDouble() + "====" + byteBuffer.getDouble(4));
+
     }
 
     /**
@@ -38,7 +116,7 @@ public class ByteBufferAPI {
             offset：要读取的第一个字节在“数组中的偏移量”，“不是缓冲区的偏移量”，必须是非负数且不大于src.length
             length：要从给定数组读取的字节的数量，必须为非负数且不大于src.length - offset
          */
-        allocate.put(byteArr_2,1,3);
+        allocate.put(byteArr_2, 1, 3);
         byte[] getBytes = allocate.array();
         for (int i = 0; i < getBytes.length; i++) {
             System.out.print(getBytes[i] + " ");
@@ -46,15 +124,15 @@ public class ByteBufferAPI {
         System.out.println();
 
         allocate.position(1);
-        byte[] byteOutArr  = new byte[allocate.capacity()];
+        byte[] byteOutArr = new byte[allocate.capacity()];
         /*
             get(byte[] dst, int offset, int length);
-            1. dst：将蝗虫去中当前位置的数据写入dst 数组中
-            2. offset：要写入的第一个字节在 ”数组中的偏移量“， 并”不是缓冲区的偏移量“， 必须为非负且不大于dst.length;
+            1. dst：将缓冲区中当前位置的数据写入dst 数组中
+            2. offset：要写入的第一个字节在 ”导出数组中的偏移量“， 并”不是缓冲区的偏移量“， 必须为非负且不大于dst.length;
             3. length：要写入到给定数组中的字节的最大数量，必须为非负且不大于 dst.length - offset;
             获取索引为1 的 长度为4 的数据，存放到索引为3 的地方。
          */
-        allocate.get(byteOutArr,3,4);
+        allocate.get(byteOutArr, 3, 4);
         for (int i = 0; i < byteOutArr.length; i++) {
             System.out.print(byteOutArr[i] + " ");
         }
