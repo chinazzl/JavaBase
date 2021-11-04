@@ -20,8 +20,8 @@ public class BufferAPI {
 
     public static void main(String[] args) {
 //        getRemainingBuffer();
-//        rewindBuffer();
-        bufferList2Array();
+        rewindBuffer();
+//        bufferList2Array();
     }
 
     /**

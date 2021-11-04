@@ -20,7 +20,32 @@ public class ByteBufferAPI {
 //        api_putOrGet();
 //        api_putType();
 //        api_slice();
-        api_asCharBuffer();
+//        api_asCharBuffer();
+        api_duplicate();
+    }
+
+    /**
+     * 创建共享此缓冲区内容的新的字节缓冲区。新缓冲区的内容将为此缓冲区的内容，容量、限制、位置和标记的值与此缓冲区相同。
+     */
+    private static void api_duplicate() {
+        byte[] bytes = new byte[]{1, 2, 3, 4, 5, 6};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        System.out.println("old byteBuffer capacity is " + byteBuffer.capacity() + ", limit is " + byteBuffer.limit() +
+                ", position is " + byteBuffer.position());
+        ByteBuffer byteBuffer_copy = byteBuffer.duplicate();
+        System.out.println("copy byteBuffer capacity is " + byteBuffer_copy.capacity() + ", limit is " + byteBuffer_copy.limit() +
+                ", position is " + byteBuffer_copy.position());
+        System.out.println(byteBuffer.equals(byteBuffer_copy));
+        byteBuffer_copy.put(1, (byte) 1);
+        for (int i = byteBuffer.position(); i < byteBuffer.limit(); i++) {
+            System.out.print(byteBuffer.get(i) + ", ");
+        }
+        System.out.println();
+        for (int i = byteBuffer_copy.position(); i < byteBuffer_copy.limit(); i++) {
+            System.out.print(byteBuffer_copy.get(i) + ", ");
+        }
+
+
     }
 
     /**

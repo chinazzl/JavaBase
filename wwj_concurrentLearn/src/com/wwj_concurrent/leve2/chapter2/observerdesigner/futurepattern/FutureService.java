@@ -5,7 +5,7 @@ package com.wwj_concurrent.leve2.chapter2.observerdesigner.futurepattern;
  * @version V1.0
  * @Title: JavaBase
  * @Package com.wwj_concurrent.leve2.chapter2.observerdesigner.futurepattern
- * @Description:
+ * @Description: 对外暴露接口
  * @Date: 2021/6/29 11:00
  */
 public class FutureService<T> {
@@ -13,8 +13,8 @@ public class FutureService<T> {
     public Future<T> submit(final FutureTask<T> futureTask) {
         AsyncFutureTask<T> asyncFutureTask = new AsyncFutureTask<>();
         new Thread(() -> {
-            T call = futureTask.call();
-            asyncFutureTask.done(call);
+            T result = futureTask.call();
+            asyncFutureTask.done(result);
         }).start();
 
         return asyncFutureTask;
