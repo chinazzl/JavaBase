@@ -16,7 +16,7 @@ public class SocketClient {
     public static void main(String[] args) {
         try {
             System.out.println("创建连接开始 " + System.currentTimeMillis());
-            Socket socket = new Socket("www.baidu.com", 80);
+            Socket socket = new Socket("localhost", 9002);
             System.out.println("连接结束 " + System.currentTimeMillis());
         } catch (IOException e) {
             e.printStackTrace();

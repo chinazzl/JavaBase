@@ -1,5 +1,9 @@
 package level3.po;
 
+import org.junit.Test;
+
+import java.lang.reflect.Field;
+
 /**
  * @author zhangzhaolin
  * @version V1.0
@@ -9,5 +13,13 @@ package level3.po;
  * @Date: 2021/10/18 17:12
  */
 public class TestMe {
-    private volatile int value;
+
+    @Test
+    public void testField() throws NoSuchFieldException, IllegalAccessException {
+        Field field = PClass.class.getDeclaredField("name");
+//        field.setAccessible(true);
+        String o = (String) field.get(new PClass());
+        System.out.println(o);
+    }
+
 }

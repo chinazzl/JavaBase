@@ -2,6 +2,7 @@ package nio.socketnio;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * @author zhangzhaolin
@@ -17,7 +18,7 @@ public class SocketServers {
         try {
             ServerSocket server = new ServerSocket(9002);
             System.out.println(" 服务器创建响应之前开始时间 " + System.currentTimeMillis());
-            server.accept();
+            Socket socket = server.accept();
             System.out.println(" 阻塞后接收数据时间 " + System.currentTimeMillis());
         } catch (IOException e) {
             e.printStackTrace();
