@@ -3,6 +3,9 @@ package com.wwj_concurrent.level3.unsafe;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author zhangzhaolin
@@ -25,10 +28,39 @@ public class UnsafeLoader {
         System.out.println(simple.get());
         System.out.println(simple.getClass());
         System.out.println(simple.getClass().getClassLoader());*/
-        Worker worker = new Worker();
+       /* 使用unsafe 进行 修改 属性，然后执行方法
+       Worker worker = new Worker();
         Field field = worker.getClass().getDeclaredField("ACCESS_WORKER");
         unsafe.putInt(worker,unsafe.objectFieldOffset(field),50);
-        worker.work();
+        worker.work();*/
+
+        Simple simple = new Simple();
+        System.out.println(sizeOf(simple));
+    }
+
+    private static long sizeOf(Object obj) {
+        Unsafe unsafe = getUnsafe();
+        Class<?> objClass = obj.getClass();
+        Set<Field> fields = new HashSet<Field>();
+        while (objClass != Object.class) {
+            Field[] declaredFields = objClass.getDeclaredFields();
+            for (Field field : declaredFields) {
+                if ((field.getModifiers() & Modifier.STATIC) == 0) {
+                    fields.add(field);
+                }
+            }
+            objClass = objClass.getSuperclass();
+        }
+        long maxOffset = 0;
+        for (Field field : fields) {
+            //内存偏移量
+            long fieldOffset = unsafe.objectFieldOffset(field);
+            if (fieldOffset > maxOffset) {
+                maxOffset = fieldOffset;
+            }
+        }
+
+        return (maxOffset / 8 + 1) * 8;
     }
 
     static class Worker {
@@ -47,6 +79,8 @@ public class UnsafeLoader {
 
     static class Simple {
         private int init;
+
+        private long size;
 
         public Simple() {
             init = 1;
