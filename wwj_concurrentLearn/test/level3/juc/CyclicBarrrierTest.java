@@ -34,9 +34,11 @@ public class CyclicBarrrierTest {
                 TimeUnit.SECONDS.sleep(2);
                 cyclicBarrier.await();
             } catch (Exception e) {
+            }finally {
                 System.out.println(Thread.currentThread().isInterrupted());
+
             }
-        }).start();
+        },"T-1").start();
 
         new Thread(() -> {
             try {
@@ -44,10 +46,9 @@ public class CyclicBarrrierTest {
                 int i =  1/0;
                 cyclicBarrier.await();
             } catch (Exception e) {
-                e.printStackTrace();
-                cyclicBarrier.notifyAll();
+                cyclicBarrier.reset();
             }
-        }).start();
+        },"T-2").start();
 
         System.out.println("after thread runner.");
         return sb;

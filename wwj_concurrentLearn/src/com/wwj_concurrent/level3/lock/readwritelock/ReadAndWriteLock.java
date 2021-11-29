@@ -1,4 +1,4 @@
-package com.wwj_concurrent.level3.lock;
+package com.wwj_concurrent.level3.lock.readwritelock;
 
 import java.util.ArrayList;
 import java.util.List;

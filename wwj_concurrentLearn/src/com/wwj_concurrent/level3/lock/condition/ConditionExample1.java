@@ -41,11 +41,13 @@ public class ConditionExample1 {
     private static void createDataBuild() {
         try {
             lock.lock();
+            // 数据没有消费则等待数据消费，如果消费了 noUse 修改为 false
             while (noUse) {
                 condition.await();
             }
             data++;
             System.out.println("p: " + data);
+            TimeUnit.SECONDS.sleep(2);
             noUse = true;
             condition.signal();
         } catch (InterruptedException e) {
@@ -58,6 +60,7 @@ public class ConditionExample1 {
     private static void consumeData() {
         try {
             lock.lock();
+            // 数据已经消费了，则等待生产数据，并且noUse 修改为 true
             while (!noUse) {
                 condition.await();
             }

@@ -1,12 +1,8 @@
-package com.wwj_concurrent.level3.lock;
+package com.wwj_concurrent.level3.lock.reentranklock;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.IntStream;
-
-import static sun.misc.PostVMInitHook.run;
 
 /**
  * @author Julyan
