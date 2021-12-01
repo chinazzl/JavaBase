@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * @version V1.0
  * @Title: JavaBase
  * @Package com.wwj_concurrent.level3.lock.stamplock
- * @Description:
+ * @Description: StampedLock：可以进行处理 读线程远大于写线程时，造成写饥饿的情况
  * @Date: 2021/11/29 18:24
  */
 public class StampLockExample {
@@ -50,6 +50,7 @@ public class StampLockExample {
     private static void read() {
         long stamp = -1;
         try {
+            // 返回一个时间戳，根据时间戳进行释放 和获取锁操作
             stamp = stampedLock.readLock();
             Optional.of(datas.stream().map(String::valueOf).collect(Collectors.joining("#", "R-", ";")))
                     .ifPresent(System.out::println);
@@ -64,6 +65,7 @@ public class StampLockExample {
     private static void write() {
         long stamp = -1;
         try {
+            // 返回一个时间戳，根据时间戳进行释放 和获取锁操作
             stamp = stampedLock.writeLock();
             datas.addLast(System.currentTimeMillis());
             TimeUnit.SECONDS.sleep(1);
