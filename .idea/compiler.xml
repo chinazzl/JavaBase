@@ -6,15 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="learnLogger" />
         <module name="slf_Learn" />
-        <module name="bootDmo" />
         <module name="learn_logBack" />
+        <module name="learnLogger" />
         <module name="shiroLearnRealm" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="bootDmo" target="1.6" />
+      <module name="bootDmo" target="1.8" />
       <module name="demor" target="1.8" />
       <module name="learn_logBack" target="1.7" />
       <module name="learnLogger" target="8" />
@@ -22,5 +21,10 @@
       <module name="shiroLearnRealm" target="1.8" />
       <module name="slf_Learn" target="1.7" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="bootDmo" options="-parameters" />
+    </option>
   </component>
 </project>

@@ -49,7 +49,6 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/bootDmo/pom.xml" />
         <option value="$PROJECT_DIR$/learnLogger/pom.xml" />
         <option value="$PROJECT_DIR$/slf_Learn/pom.xml" />
         <option value="$PROJECT_DIR$/learn_logBack/pom.xml" />
@@ -57,7 +56,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8 x64" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
