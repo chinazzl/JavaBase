@@ -4,9 +4,13 @@
     <file url="file://$PROJECT_DIR$/bootDmo" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bootDmo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/learnLogger" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/learnLogger/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/learnLogger/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/learn_logBack" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/shiroLearnRealm/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/shiroLearnRealm/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/slf_Learn" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/slf_Learn/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/slf_Learn/src/main/resources" charset="UTF-8" />
   </component>
 </project>
