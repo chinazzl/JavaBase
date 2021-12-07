@@ -16,7 +16,7 @@ public class PhaserSimpleApi2 {
     public static void main(String[] args) {
         final Phaser phaser = new Phaser(5);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 1; i < 6; i++) {
             new Task(phaser).start();
         }
         phaser.arriveAndAwaitAdvance();
