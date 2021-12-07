@@ -13,29 +13,75 @@ import java.util.concurrent.TimeUnit;
  */
 public class PhaserSimpleApi2 {
 
-    public static void main(String[] args) {
-        final Phaser phaser = new Phaser(5);
+    public static void main(String[] args) throws InterruptedException {
+        final Phaser phaser = new Phaser(2) {
+            /*
+                如果返回值为true，则phaser不循环服用，相当于Terminate
+             */
+            @Override
+            protected boolean onAdvance(int phase, int registeredParties) {
+                return false;
+            }
+        };
 
-        for (int i = 1; i < 6; i++) {
-            new Task(phaser).start();
-        }
+       /* System.out.println(phaser.getPhase());
         phaser.arriveAndAwaitAdvance();
-        System.out.println("=========================");
-        System.out.println(phaser.getUnarrivedParties());
+        System.out.println(phaser.getPhase());
+        phaser.arriveAndAwaitAdvance();
+        System.out.println(phaser.getPhase());*/
+
+        /*phaser.arriveAndAwaitAdvance();
+        phaser.register();
+        System.out.println(phaser.getRegisteredParties());*/
+
+       /* phaser.bulkRegister(10);
+        System.out.println(phaser.getRegisteredParties());
         System.out.println(phaser.getArrivedParties());
+        System.out.println(phaser.getUnarrivedParties());
+        new Thread(phaser::arriveAndAwaitAdvance).start();
+        TimeUnit.SECONDS.sleep(1);
+        System.out.println("==================================");
+        System.out.println(phaser.getRegisteredParties());
+        System.out.println(phaser.getArrivedParties());
+        System.out.println(phaser.getUnarrivedParties());*/
+
+        System.out.println("===============OnAdvice=================");
+        new OnAdvanceTask("A", phaser).start();
+        new OnAdvanceTask("B", phaser).start();
+        TimeUnit.SECONDS.sleep(2);
+
+        System.out.println(phaser.getArrivedParties());
+        System.out.println(phaser.getUnarrivedParties());
+
     }
 
     static class OnAdvanceTask extends Thread {
         private final Phaser phaser;
 
-        OnAdvanceTask(Phaser phaser) {
+        OnAdvanceTask(String name, Phaser phaser) {
+            super(name);
             this.phaser = phaser;
         }
 
         @Override
         public void run() {
+            System.out.println(getName() + " I am started. The phaser is " + phaser.getPhase());
+            phaser.arriveAndAwaitAdvance();
+            System.out.println(getName() + " I am ended. ");
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (getName().equals("A")) {
+                System.out.println(getName() + " I am started. The phaser is " + phaser.getPhase());
+                phaser.arriveAndAwaitAdvance();
+                System.out.println(getName() + " I am ended. ");
+            }
+            System.out.println(getName() + "==> " +phaser.isTerminated());
         }
     }
+
 
     static class Task extends Thread {
         private final Phaser phaser;
@@ -60,7 +106,7 @@ public class PhaserSimpleApi2 {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            phaser.arriveAndAwaitAdvance();
+//            phaser.arriveAndAwaitAdvance();
         }
     }
 
