@@ -22,7 +22,7 @@ public class PhaserSimpleApi {
         for (int i = 1; i < 5; i++) {
             new Athlete(i, phaser).start();
         }
-        new HungryAthlete(6, phaser).start();
+//        new HungryAthlete(6, phaser).start();
     }
 
     private static class HungryAthlete extends Thread {
