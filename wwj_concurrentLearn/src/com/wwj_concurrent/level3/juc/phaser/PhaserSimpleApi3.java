@@ -47,6 +47,7 @@ public class PhaserSimpleApi3 {
                 System.out.println(getName() + " will be started. phaser " + phaser.getPhase());
                 PhaserSimpleApi3.sleep();
                 System.out.println(getName() + " will be ended. phaser " + phaser.getPhase());
+                // arrive不会阻塞
                 phaser.arrive();
                 PhaserSimpleApi3.sleep();
                 System.out.println(getName() + " ===== do other things =====");
