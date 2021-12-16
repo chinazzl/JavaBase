@@ -43,14 +43,18 @@ public class CreateThreadPoolBuild {
          * ThreadFactory threadFactory,
          * RejectedExecutionHandler handler 拒绝策略
          */
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(2), r -> {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 4, 30, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(1), r -> {
             Thread t = new Thread(r);
             return t;
         }, new ThreadPoolExecutor.AbortPolicy());
         threadPoolExecutor.submit(() -> sleepSeconds(100));
         threadPoolExecutor.submit(() -> sleepSeconds(100));
-        // 当执行任务数大于最大线程则新创建一个线程
+        /*
+            1. 当线程池提交任务少于核心线程池的时候，会创建一个新的线程
+            2. 当线程池提交任务 小于最大线程数，且队列已经满了的时候会创建一个新的线程
+         */
+        threadPoolExecutor.submit(() -> sleepSeconds(10));
         threadPoolExecutor.submit(() -> sleepSeconds(10));
         threadPoolExecutor.submit(() -> sleepSeconds(10));
 
