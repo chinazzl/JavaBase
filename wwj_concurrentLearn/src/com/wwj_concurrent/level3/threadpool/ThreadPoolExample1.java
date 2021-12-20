@@ -16,18 +16,63 @@ import java.util.stream.IntStream;
 public class ThreadPoolExample1 {
 
     public static void main(String[] args) {
-        useNewCacheThreadPool();
+//        useNewCacheThreadPool();
+        useNewSingleThreadPool();
+    }
+
+    /**
+     * singleThreadExecutor 和 普通Thread创建的区别：
+     * 1. 普通Thread执行后直接销毁，singleThreadExecutor 执行后不销毁，有一个核心线程
+     * 2. Thread执行多个线程不放到Queue中，singleThreadExecutor 执行多个任务，会将他们放到Queue中。
+     * <p>
+     * new FinalizableDelegatedExecutorService
+     * (new ThreadPoolExecutor(1, 1,
+     * 0L, TimeUnit.MILLISECONDS,
+     * new LinkedBlockingQueue<Runnable>()));
+     * <p>
+     * 等价
+     * <p>
+     * new ThreadPoolExecutor(nThreads, nThreads,
+     * 0L, TimeUnit.MILLISECONDS,
+     * new LinkedBlockingQueue<Runnable>()
+     * ================================
+     * Executors.newFixedThreadPool(1);
+     */
+    private static void useNewSingleThreadPool() {
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        IntStream.range(0, 10).boxed().forEach(i -> {
+            singleThreadExecutor.execute(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                    System.out.println(Thread.currentThread().getName() + "[" + i + "]");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
     }
 
     /**
      * new ThreadPoolExecutor(nThreads, nThreads,
      * 0L, TimeUnit.MILLISECONDS,
      * new LinkedBlockingQueue<Runnable>()
-     *
-     * 一个
+     * <p>
+     * 一个具有固定线程的线程池
      */
-    private static void useNewFixThreadPool() {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private static void useNewFixThreadPool() throws InterruptedException {
+        ThreadPoolExecutor executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+        IntStream.range(0, 10).boxed().forEach(i -> {
+            executorService.execute(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                    System.out.println(Thread.currentThread().getName() + "[" + i + "]");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        TimeUnit.SECONDS.sleep(1);
+        System.out.println("Active Thread => " + executorService.getActiveCount());
     }
 
     /**
