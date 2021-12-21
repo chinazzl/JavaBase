@@ -17,13 +17,15 @@ import java.util.concurrent.TimeUnit;
 public class PhaserSimpleApi2 {
 
     public static void main(String[] args) throws InterruptedException {
-        final Phaser phaser = new Phaser(2) {
-            /*
+        final Phaser phaser = new Phaser(1) {
+
+             /*
                 如果返回值为true，则phaser不循环服用，相当于Terminate
              */
+
             @Override
             protected boolean onAdvance(int phase, int registeredParties) {
-                return false;
+                return true;
             }
         };
 
@@ -48,13 +50,13 @@ public class PhaserSimpleApi2 {
         System.out.println(phaser.getArrivedParties());
         System.out.println(phaser.getUnarrivedParties());*/
 
-        System.out.println("===============OnAdvice=================");
+       /* System.out.println("===============OnAdvice=================");
         new OnAdvanceTask("A", phaser).start();
         new OnAdvanceTask("B", phaser).start();
         TimeUnit.SECONDS.sleep(2);
 
         System.out.println(phaser.getArrivedParties());
-        System.out.println(phaser.getUnarrivedParties());
+        System.out.println(phaser.getUnarrivedParties());*/
 
     }
 
@@ -81,7 +83,7 @@ public class PhaserSimpleApi2 {
                 phaser.arriveAndAwaitAdvance();
                 System.out.println(getName() + " I am ended. ");
             }
-            System.out.println(getName() + "==> " +phaser.isTerminated());
+            System.out.println(getName() + "==> " + phaser.isTerminated());
         }
     }
 
