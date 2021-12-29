@@ -19,7 +19,9 @@ public class ExecuteServiceAPI3 {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, TimeoutException {
 //        testInvokeAny();
-        testInvokeAnyTimeOut();
+//        testInvokeAnyTimeOut();
+//        testInvokeAllTimeOut();
+        testSubmitWithResult();
     }
 
     /**
@@ -42,7 +44,7 @@ public class ExecuteServiceAPI3 {
     }
 
     /**
-     * 测试调用超时
+     * 测试调用超时，线程池中任务一直执行，直到达到超时时间后取一个结果值进行返回，其他的未执行完的线程进行cancel
      *
      * @throws ExecutionException
      * @throws InterruptedException
@@ -62,6 +64,8 @@ public class ExecuteServiceAPI3 {
 
 
     /**
+     * 执行线程池中所有的任务，也是阻塞
+     *
      * @throws InterruptedException
      */
     private static void testInvokeAll() throws InterruptedException {
@@ -71,6 +75,55 @@ public class ExecuteServiceAPI3 {
             return i;
         }).collect(toList());
         List<Future<Integer>> invokeAny = executorService.invokeAll(callables);
+    }
+
+    /**
+     * 在指定超时时间内调用所有任务 (阻塞)
+     *
+     * @throws InterruptedException
+     */
+    private static void testInvokeAllTimeOut() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        executorService.invokeAll(IntStream.range(0, 5).boxed().map(i -> (Callable<Integer>) () -> {
+            TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(10));
+            System.out.println(Thread.currentThread().getName() + ": " + i);
+            return i;
+        }).collect(toList()), 3, TimeUnit.SECONDS)
+                .stream().map(future -> {
+            try {
+                return future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }).forEach(System.out::println);
+    }
+
+
+    private static void testSubmit() throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        Future<?> future = executorService.submit(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        Object NULL = future.get();
+        System.out.println("task finished return " + NULL);
+    }
+
+    private static void testSubmitWithResult() throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        String result = "DONE";
+        Future<String> future = executorService.submit(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }, result);
+        String resultVal = future.get();
+        System.out.println("===finished result === " + resultVal);
     }
 
 }

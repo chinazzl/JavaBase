@@ -120,7 +120,6 @@ public class ExecuteServiceAPI2 {
         }));
     }
 
-
     static abstract class MyRunnable implements Runnable {
         private int no;
 
@@ -133,7 +132,7 @@ public class ExecuteServiceAPI2 {
         }
     }
 
-    // ===========Thread Pool Advice ================
+    // ===========Thread Pool Advice Begin ================
     static class MyThreadExecutor extends ThreadPoolExecutor {
         public MyThreadExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
             super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
@@ -153,8 +152,5 @@ public class ExecuteServiceAPI2 {
             }
         }
     }
-
-    // ===========Thread Pool Advice ================
-
-
+    // ===========Thread Pool Advice End ================
 }
