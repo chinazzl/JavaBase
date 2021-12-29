@@ -14,7 +14,6 @@ public class AtomicXXXFiledUpdater {
 
     public static void main(String[] args) {
         AtomicIntegerFieldUpdater<TestMe> atomicIntegerFieldUpdater = AtomicIntegerFieldUpdater.newUpdater(TestMe.class, "v");
-
         TestMe testMe = new TestMe();
 
         for (int i = 0; i < 2; i++) {
