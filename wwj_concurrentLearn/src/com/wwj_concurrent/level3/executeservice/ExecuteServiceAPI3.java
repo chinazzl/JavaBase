@@ -21,7 +21,8 @@ public class ExecuteServiceAPI3 {
 //        testInvokeAny();
 //        testInvokeAnyTimeOut();
 //        testInvokeAllTimeOut();
-        testSubmitWithResult();
+//        testSubmitWithResult();
+        testGetQueueAdd();
     }
 
     /**
@@ -85,17 +86,17 @@ public class ExecuteServiceAPI3 {
     private static void testInvokeAllTimeOut() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         executorService.invokeAll(IntStream.range(0, 5).boxed().map(i -> (Callable<Integer>) () -> {
-            TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(10));
-            System.out.println(Thread.currentThread().getName() + ": " + i);
-            return i;
-        }).collect(toList()), 3, TimeUnit.SECONDS)
+                    TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(10));
+                    System.out.println(Thread.currentThread().getName() + ": " + i);
+                    return i;
+                }).collect(toList()), 3, TimeUnit.SECONDS)
                 .stream().map(future -> {
-            try {
-                return future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
-            }
-        }).forEach(System.out::println);
+                    try {
+                        return future.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).forEach(System.out::println);
     }
 
 
@@ -124,6 +125,17 @@ public class ExecuteServiceAPI3 {
         }, result);
         String resultVal = future.get();
         System.out.println("===finished result === " + resultVal);
+    }
+
+    /**
+     * 测试直接获取{@link ThreadPoolExecutor#getQueue()} 直接进行添加是否能执行。
+     */
+    private static void testGetQueueAdd() {
+        ThreadPoolExecutor executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
+        executorService.execute(() -> {
+            System.out.println(Thread.currentThread().getName() + "- task");
+        });
+        executorService.getQueue().add(() -> System.out.println("Add " + Thread.currentThread().getName() + "- task"));
     }
 
 }
