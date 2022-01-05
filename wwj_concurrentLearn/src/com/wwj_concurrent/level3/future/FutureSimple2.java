@@ -1,6 +1,7 @@
 package com.wwj_concurrent.level3.future;
 
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Julyan
@@ -48,7 +49,9 @@ public class FutureSimple2 {
      * <p>
      * 1. This attempt will fail if the task has already completed,
      * <p>
-     * 2. has already been cancelled,could not be cancelled for some other reason.
+     * 2. has already been cancelled,
+     * <p>
+     * 3. could not be cancelled for some other reason.
      * <p>
      * If successful,and this task has not started when {@code cancel} is called,
      * this task should never run.  If the task has already started,
@@ -64,17 +67,41 @@ public class FutureSimple2 {
      * @throws InterruptedException
      */
     private static void testCancel() throws ExecutionException, InterruptedException {
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newCachedThreadPool(
+                // 对于很大很大的任务想要强制退出，则需要重写ThreadFactory并且设置守护线程
+                new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread t = new Thread(r);
+                t.setDaemon(true);
+                return t;
+            }
+        });
+        AtomicBoolean running = new AtomicBoolean(true);
         Future<Integer> future = executorService.submit(() -> {
-            /*try {
+           /* try {
                 TimeUnit.SECONDS.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
+            // 对于很大很大的任务想要强制退出，则需要重写ThreadFactory并且设置守护线程
+            while (running.get()) {
+
+            }
+            // 如果有 很耗时的任务进行取消的话，使用Thread和 interupt结合使用，一般做法
+          /*  while (!Thread.interrupted()) {
+
+            }*/
+            System.out.println("11111111");
             return 10;
         });
-        Integer result = future.get();
-        System.out.println(future.cancel(false));
-
+        // 如果任务已经完成 则cancel失败
+//        Integer result = future.get();
+        TimeUnit.MILLISECONDS.sleep(10);
+        System.out.println(future.cancel(true));
+        // false
+        System.out.println(future.cancel(true));
+        System.out.println(future.isDone());
+        System.out.println(future.isCancelled());
     }
 }
