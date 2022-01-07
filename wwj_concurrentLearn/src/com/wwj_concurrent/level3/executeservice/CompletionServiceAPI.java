@@ -14,7 +14,8 @@ import java.util.concurrent.*;
 public class CompletionServiceAPI {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        completionServiceTake();
+//        completionServiceTake();
+        completionServiceSubmit();
     }
 
     private static void completionServiceTake() throws InterruptedException, ExecutionException {
@@ -34,12 +35,63 @@ public class CompletionServiceAPI {
         ExecutorCompletionService<Integer> completionService = new ExecutorCompletionService<>(executorService);
         List<Future<Integer>> futures = new ArrayList<>();
         callables.forEach(callable -> futures.add(completionService.submit(callable)));
-        Future<Integer> f;
+/*        Future<Integer> f;
         // take 方法是 阻塞的
         while ((f = completionService.take()) != null) {
             System.out.println(f.get());
+        }*/
+
+        // poll 非阻塞 内部任务还在执行 返回null
+        System.out.println(completionService.poll());
+    }
+
+    /**
+     * 使用{@link ExecutorCompletionService#submit(Runnable, Object)} ，带有返回值的ExecutorCompletionService
+     *
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    private static void completionServiceSubmit() throws InterruptedException, ExecutionException {
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        ExecutorCompletionService<Event> completionService = new ExecutorCompletionService<>(executorService);
+        final Event event = new Event(1);
+        completionService.submit(new MyTask(event), event);
+        System.out.println(completionService.take().get().result);
+    }
+
+    private static class MyTask implements Runnable {
+
+        private Event event;
+
+        public MyTask(Event event) {
+            this.event = event;
+        }
+
+        @Override
+        public void run() {
+            sleep(10);
+            event.setResult("Bingo...");
+            System.out.println(" My task execute Successful. ");
         }
     }
+
+    private static class Event {
+        private int eventId;
+        private String result;
+
+        public Event(int eventId) {
+            this.eventId = eventId;
+        }
+
+        public String getResult() {
+            return result;
+        }
+
+        public void setResult(String result) {
+            this.result = result;
+        }
+    }
+
 
     /**
      * sleep specify
