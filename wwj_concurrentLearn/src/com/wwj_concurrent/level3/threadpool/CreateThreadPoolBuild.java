@@ -42,6 +42,7 @@ public class CreateThreadPoolBuild {
          * BlockingQueue<Runnable> workQueue, 在线程池使执行runnable之前，将线程放到workQueue中。
          * ThreadFactory threadFactory,
          * RejectedExecutionHandler handler 拒绝策略
+         *
          */
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 4, 30, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(1), r -> {
@@ -52,11 +53,15 @@ public class CreateThreadPoolBuild {
         threadPoolExecutor.submit(() -> sleepSeconds(10));
         /*
             1. 当线程池提交任务少于核心线程池的时候，会创建一个新的线程
-            2. 当线程池提交任务 小于最大线程数，且队列已经满了的时候会创建一个新的线程
+            2. 当核心线程满了，再向线程池提交任务 且小于最大线程数，队列已经满了的时候会从队列中取出一个任务进行创建一个新的线程
+            3. 如果队列中的任务数已经满了，并且活动的任务数大于最大线程数 则调用拒绝策略
          */
-       /* threadPoolExecutor.submit(() -> sleepSeconds(10));
         threadPoolExecutor.submit(() -> sleepSeconds(10));
-        threadPoolExecutor.submit(() -> sleepSeconds(10));*/
+        threadPoolExecutor.submit(() -> sleepSeconds(10));
+        // Task has full in thread pool. queue had full .
+        threadPoolExecutor.submit(() -> sleepSeconds(10));
+        // Task rejected from this thread pool
+//        threadPoolExecutor.submit(() -> sleepSeconds(10));
 
         return threadPoolExecutor;
     }

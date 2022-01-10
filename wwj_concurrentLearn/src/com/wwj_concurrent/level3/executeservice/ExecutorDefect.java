@@ -90,7 +90,6 @@ public class ExecutorDefect {
                 System.out.printf("the task [%d] has done. \n", i);
             } catch (InterruptedException e) {
                 System.out.printf("the task [%d] has interrupt\n", i);
-
             }
         };
     }
