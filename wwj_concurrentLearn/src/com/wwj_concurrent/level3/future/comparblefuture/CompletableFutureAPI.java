@@ -69,7 +69,7 @@ public class CompletableFutureAPI {
 
     /**
      * 将future返回的数据转换成另外的一个格式返回future
-     * thenApplyAsync()具体返回还是要
+     * thenApplyAsync()具体返回 只是一个异步方法，最后返回的是最终的future，不会先返回future后执行theApplyAsync()
      *
      * @return
      */
