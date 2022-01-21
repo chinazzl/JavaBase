@@ -1,5 +1,7 @@
 package com.wwj_concurrent.level3.future.comparblefuture;
 
+import com.sun.xml.internal.ws.util.CompletedFuture;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -16,9 +18,10 @@ import java.util.concurrent.TimeUnit;
  * *   whenComplete {@link CompletableFutureAPI#testWhenCompleteAsync()}
  * *   whenCompleteAsync {@link CompletableFutureAPI#testWhenCompleteAsync()}
  * *   thenApply {@link CompletableFutureAPI#testApplyAsync()}
- * *   thenApplyAsync
+ * *   thenApplyAsync {@link CompletableFutureAPI#testApplyAsync()}
  * *   handleAsync
  * *   handle
+ * *   toCompleteFutures
  * 3.2 intermediate the Void
  * *   thenAccept
  * *   thenAcceptAsync
@@ -30,7 +33,8 @@ import java.util.concurrent.TimeUnit;
 public class CompletableFutureAPI {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 //        Future<String> future = testWhenCompleteAsync();
-        Future<Integer> future = testApplyAsync();
+//        Future<Integer> future = testApplyAsync();
+        CompletableFuture<Integer> future = testHandleAsync();
 
         System.out.println("main Result => " + future.get());
         Thread.currentThread().join();
@@ -79,14 +83,35 @@ public class CompletableFutureAPI {
         // ============ Async ==============
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> "Hello World");
         CompletableFuture<Integer> integerCompletableFuture1 = future.thenApplyAsync(data -> {
-                    try {
-                        TimeUnit.SECONDS.sleep(5);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return data.length();
-                });
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return data.length();
+        });
         return integerCompletableFuture1;
+    }
+
+    /**
+     * handleAsync BiFunction，
+     * <p>
+     * * 与 WhenComplete 区别：
+     * 1. handle(BiFunction)，whenComplete(BiConsume)
+     */
+    private static CompletableFuture<Integer> testHandleAsync() {
+        CompletableFuture<String> supplyAsync = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "Hello World";
+        });
+        CompletableFuture<Integer> handle = supplyAsync.handle((data, t) -> {
+            return data.length();
+        });
+        return handle;
     }
 }
 
