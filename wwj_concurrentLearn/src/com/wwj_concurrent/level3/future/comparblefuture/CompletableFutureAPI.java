@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * *   thenApplyAsync {@link CompletableFutureAPI#testApplyAsync()}
  * *   handleAsync
  * *   handle
- * *   toCompleteFutures
+ * *   toCompleteFutures return this
  * 3.2 intermediate the Void
  * *   thenAccept
  * *   thenAcceptAsync
