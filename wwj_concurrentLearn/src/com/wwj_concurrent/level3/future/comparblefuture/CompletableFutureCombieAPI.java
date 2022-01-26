@@ -181,5 +181,4 @@ public class CompletableFutureCombieAPI {
             return 1000;
         }), (d1, d2) -> System.out.println(d1 + " ---- " + d2));
     }
-
 }
