@@ -2,10 +2,12 @@ package com.wwj_concurrent.level3.future.comparblefuture;
 
 import com.sun.xml.internal.ws.util.CompletedFuture;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
  * @author Julyan
@@ -53,9 +55,9 @@ public class CompletableFutureAPI {
      */
     private static Future<String> testWhenCompleteAsync() {
         // ============ sync ==============
-        CompletableFuture.supplyAsync(() -> "Hello world").whenComplete((v, t) -> {
+       /* CompletableFuture.supplyAsync(() -> "Hello world").whenComplete((v, t) -> {
             System.out.println(v + " sync finished. ");
-        });
+        });*/
 
         // ============ Async ==============
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> "Hello world");
@@ -100,18 +102,16 @@ public class CompletableFutureAPI {
      * 1. handle(BiFunction)，whenComplete(BiConsume)
      */
     private static CompletableFuture<Integer> testHandleAsync() {
-        CompletableFuture<String> supplyAsync = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        return CompletableFuture.supplyAsync((Supplier<String>) () -> {
+//            return "Hello World";
+            throw new RuntimeException("no data return");
+        }).handleAsync((data, t) -> {
+            System.out.println(" async handle...");
+            if (data == null) {
+                Optional.of(t).ifPresent(e -> System.out.println("Error"));
             }
-            return "Hello World";
+            return data == null ? 0 : data.length();
         });
-        CompletableFuture<Integer> handle = supplyAsync.handle((data, t) -> {
-            return data.length();
-        });
-        return handle;
     }
 }
 
