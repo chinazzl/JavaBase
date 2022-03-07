@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/aboutspring/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/aboutspring/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bootDmo" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bootDmo/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/learnLogger" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/learnLogger/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/learnLogger/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/learn_logBack" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/learn_logBack/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/learn_logBack/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/shiroLearnRealm/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/shiroLearnRealm/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/slf_Learn" charset="UTF-8" />

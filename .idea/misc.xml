@@ -39,6 +39,7 @@
     </properties>
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/aboutspring" />
     <file type="web" url="file://$PROJECT_DIR$/bootDmo" />
     <file type="web" url="file://$PROJECT_DIR$/demor" />
     <file type="web" url="file://$PROJECT_DIR$/learn_logBack" />
@@ -53,10 +54,11 @@
         <option value="$PROJECT_DIR$/slf_Learn/pom.xml" />
         <option value="$PROJECT_DIR$/learn_logBack/pom.xml" />
         <option value="$PROJECT_DIR$/shiroLearnRealm/pom.xml" />
+        <option value="$PROJECT_DIR$/aboutspring/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
