@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private AnOtherTbService anOtherTbService;
 
-//   @Autowired
+   @Autowired
    private TransactionTemplate transactionTemplate;
 
     @Override

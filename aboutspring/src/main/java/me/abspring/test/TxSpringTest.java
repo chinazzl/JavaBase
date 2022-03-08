@@ -2,6 +2,7 @@ package me.abspring.test;
 
 import me.abspring.entity.Student;
 import me.abspring.service.StudentService;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -16,17 +17,12 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public class TxSpringTest {
 
-    private StudentService studentService;
+    private static StudentService studentService;
 
-
-    private ClassPathXmlApplicationContext context;
-    {
-        context = new ClassPathXmlApplicationContext("classpath:spring/application.xml");
+    public static void main(String[] args) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/application.xml");
+        TransactionTemplate transactionTemplate = (TransactionTemplate) context.getBean("transactionTemplate");
         studentService = (StudentService) context.getBean("studentService");
-    }
-
-    @Test
-    public void testTxCodeByTemplate() {
         Student student = new Student();
         student.setName("zs");
         student.setAge(12);
