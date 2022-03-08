@@ -1,6 +1,5 @@
 package leetCode;
 
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
