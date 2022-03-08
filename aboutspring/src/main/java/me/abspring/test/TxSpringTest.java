@@ -21,7 +21,6 @@ public class TxSpringTest {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/application.xml");
-        TransactionTemplate transactionTemplate = (TransactionTemplate) context.getBean("transactionTemplate");
         studentService = (StudentService) context.getBean("studentService");
         Student student = new Student();
         student.setName("zs");
