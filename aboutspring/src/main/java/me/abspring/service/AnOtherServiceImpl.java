@@ -4,6 +4,7 @@ import me.abspring.dao.AnOtherTbDao;
 import me.abspring.entity.AnOtherTb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Julyan
@@ -18,7 +19,20 @@ public class AnOtherServiceImpl implements AnOtherTbService {
     private AnOtherTbDao anOtherTbDao;
 
     @Override
+    @Transactional
     public int insertTestTb(AnOtherTb otherTb) {
-        return anOtherTbDao.insertTestTb(otherTb);
+        int result = 0;
+        try {
+            for (int i = 0; i < 8; i++) {
+                result = anOtherTbDao.insertTestTb(otherTb);
+                if (i == 3) {
+                    result = 1 / 0;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
+        return result;
     }
 }

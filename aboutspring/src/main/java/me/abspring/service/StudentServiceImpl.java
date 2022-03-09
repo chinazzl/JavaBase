@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -24,14 +25,21 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private AnOtherTbService anOtherTbService;
 
-   private PlatformTransactionManager transactionManager;
+    private PlatformTransactionManager transactionManager;
 
-   @Autowired
-   public void setTransactionManager(PlatformTransactionManager transactionManager) {
-       this.transactionManager = transactionManager;
-   }
+    @Autowired
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
+    }
 
+    /**
+     * 使用全注解方式
+     *
+     * @param student
+     * @return
+     */
     @Override
+    @Transactional
     public int addStudent(Student student) {
         AnOtherTb anOtherTb = new AnOtherTb();
         anOtherTb.setName(student.getName());
@@ -53,8 +61,8 @@ public class StudentServiceImpl implements StudentService {
             return null;
         });*/
         // 2. 使用Platform Transaction Manager
-            // 定义事务属性
-        DefaultTransactionDefinition transactionDef = new DefaultTransactionDefinition();
+        // 定义事务属性
+        /*DefaultTransactionDefinition transactionDef = new DefaultTransactionDefinition();
         // 设置传播行为
         transactionDef.setPropagationBehavior(DefaultTransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = transactionManager.getTransaction(transactionDef);
@@ -67,7 +75,19 @@ public class StudentServiceImpl implements StudentService {
         } catch (Exception e) {
             // 回滚
             transactionManager.rollback(status);
+        }*/
+        try {
+            for (int i = 0; i < 8; i++) {
+                studentDao.insertStudent(student);
+                anOtherTbService.insertTestTb(anOtherTb);
+//                if (i == 3) {
+//                    int temp = i / 0;
+//                }
+            }
+        } catch (Exception e) {
+
         }
+
         return 1001;
     }
 }
