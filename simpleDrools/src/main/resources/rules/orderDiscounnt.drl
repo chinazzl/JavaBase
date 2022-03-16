@@ -3,7 +3,7 @@ package demo.firstDrools;
 import org.testdrools.entity.Order;
 
 // 规则一
-rule "under100"
+rule under100
     when
         $order:Order(originalPrice < 100)
     then
@@ -13,7 +13,7 @@ rule "under100"
 
  // 规则二 所购图书总价在100到200元的优惠20元
 // rule "计算优惠100到200的优惠20"
-rule "between100and200"
+rule between100and200
     when
         $order:Order(originalPrice >=100 && originalPrice < 200)
     then
@@ -23,7 +23,7 @@ rule "between100and200"
 
  //规则三：所购图书总价在200到300元的优惠50元
 // rule "书总价在200到300元的优惠50元"
-rule "between200and300"
+rule between200and300
     when
         $order:Order(originalPrice >= 200 && originalPrice < 300)
     then
@@ -33,7 +33,7 @@ rule "between200and300"
 
  //规则四：所购图书总价在300元以上的优惠100元
 //  rule "书总价在300元以上的优惠100元"
-rule "marethan300"
+rule marethan300
      when
          $order:Order(originalPrice >= 300)
      then
