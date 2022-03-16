@@ -55,4 +55,10 @@ public class SimpleTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void mathRound() {
+        System.out.println(Math.round(-1.2));
+        System.out.println(Math.round(1.2));
+    }
 }

@@ -11,6 +11,7 @@
         <module name="learn_logBack" />
         <module name="learnLogger" />
         <module name="shiroLearnRealm" />
+        <module name="simpleDrools" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,6 +19,7 @@
       <module name="learn_logBack" target="1.7" />
       <module name="learnLogger" target="8" />
       <module name="shiroLearnRealm" target="1.8" />
+      <module name="simpleDrools" target="8" />
       <module name="slf_Learn" target="1.7" />
     </bytecodeTargetLevel>
   </component>
