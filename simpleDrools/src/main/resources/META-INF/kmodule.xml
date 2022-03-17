@@ -11,6 +11,6 @@
             name:指定ksession名称，可以任意，但是需要唯一
             default:指定当前session是否为默认
         -->
-        <ksession name="ksession-rule"/>
+        <ksession name="ksession-rule" default="true"/>
     </kbase>
 </kmodule>

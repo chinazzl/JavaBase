@@ -1,0 +1,37 @@
+package rules;
+dialect  "mvel"
+import org.testdrools.entity.ComparationOperation;
+
+// contains：元素v 包含 xx
+rule "comparationContains"
+    when
+        ComparationOperation(userName contains "zs") and
+        ComparationOperation(data contains userName)
+    then
+        System.out.println("匹配到规则，userName contains zs");
+end
+
+rule "comparationNotContains"
+    when
+        ComparationOperation(userName not contains "zs")
+        ComparationOperation(data not contains userName)
+    then
+        System.out.println("匹配到规则，userName not contains zs");
+end
+
+// memberOf 一个元素 xx 是否是一个成员field的元素
+rule "comparationMemberOf"
+    when
+        ComparationOperation("zs" memberOf userName)
+        ComparationOperation(userName memberOf data)
+    then
+        System.out.println("zs 是 usrName memberOf 一个成员");
+end
+
+// matches
+rule "comparationMatched"
+    when
+        ComparationOperation(userName matches "s.*")
+    then
+        System.out.println("userName 已经匹配到正则 z.*");
+end

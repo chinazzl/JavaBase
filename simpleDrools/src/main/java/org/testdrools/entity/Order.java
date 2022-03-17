@@ -12,6 +12,11 @@ public class Order {
     //订单真实价格，即优惠后价格
     private Double realPrice;
 
+    public Order(Double originalPrice, Double realPrice) {
+        this.originalPrice = originalPrice;
+        this.realPrice = realPrice;
+    }
+
     public String toString() {
         return "Order{" +
                 "originalPrice=" + originalPrice +
