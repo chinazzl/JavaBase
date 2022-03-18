@@ -1,0 +1,20 @@
+package rules;
+dialect  "mvel"
+
+import org.testdrools.entity.Student;
+
+rule "规则大于10岁"
+    when
+        $student:Student(age < 10)
+    then
+        $student.setAge(15);
+        update($student);
+        System.out.println("匹配得到规则小于10岁的规则 ");
+end
+
+rule "规则大于10岁小于20岁"
+    when
+        $student:Student(age > 10 && age < 20)
+    then
+        System.out.println("匹配到年龄大于10岁小于20岁的规则");
+end

@@ -33,5 +33,5 @@ rule "comparationMatched"
     when
         ComparationOperation(userName matches "s.*")
     then
-        System.out.println("userName 已经匹配到正则 z.*");
+        System.out.println("userName 已经匹配到正则 s.*");
 end
