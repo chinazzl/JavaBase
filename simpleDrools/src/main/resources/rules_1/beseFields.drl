@@ -1,0 +1,59 @@
+package rules_1;
+dialect  "mvel"
+
+import org.testdrools.entity.Student;
+/*
+    内置属性
+    1. salience 优先级，数字越大优先级越高
+    2. enabled 该规则是否可用
+    3. no-loop 是否开启终止死循环
+    4. dialect "java"/"mavel" 使用别名语法
+    5. activation-group "groupName" 激活分组，相同分组规则相同只加载一个
+    6. agenda-group "议程分组"，指定的议程分组才允许进行加载，如果其他分组也允许匹配可以使用 auto-focus true
+    7. auto-focus 自动获取焦点，议程没有获取焦点也允许匹配
+    8. timer 可以进行定时调用规则1. timer(int delay,int interval) 2. timer(cron)
+    9. date-effective 默认"dd-MM-yyyy" 指定约定时间大于或等于时才进行生效
+    10. date-expires 默认"dd-MM-yyyy" 指定小于设置时间才进行触发
+*/
+rule "规则年龄大于20岁"
+    no-loop true
+    when
+       $student:Student(age > 20)
+    then
+        $student.setAge(30);
+        // 会导致死循环
+        update($student)
+        System.out.println("匹配到年龄大于20岁");
+end
+
+rule "rule1"
+    activation-group "myActiveGroup"
+    agenda-group "myagendaGroup"
+    when
+    then
+        System.out.println("激活组 myActiveGroup 已经激活,agentGroup 已经激活" );
+end
+
+rule "rule2"
+    activation-group "myActiveGroup"
+    agenda-group "myagendaGroup"
+    when
+    then
+        System.out.println("激活组 myActiveGroup 已经激活,agentGroup 已经激活" );
+end
+
+rule "rule3"
+    activation-group "myActiveGroup1"
+    agenda-group "myagendaGroup1"
+    when
+    then
+        System.out.println("激活组 myActiveGroup1 已经激活,agentGroup1 已经激活" );
+end
+
+rule "rule4"
+    activation-group "myActiveGroup1"
+    agenda-group "myagendaGroup1"
+    when
+    then
+        System.out.println("激活组 myActiveGroup1 已经激活,agentGroup1 已经激活" );
+end

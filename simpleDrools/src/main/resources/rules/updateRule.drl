@@ -39,15 +39,3 @@ rule "规则大于10岁小于20岁"
     then
         System.out.println("匹配到年龄大于10岁小于20岁的规则");
 end
-
-// 内置属性
-rule "规则年龄大于20岁"
-    no-loop true
-    when
-       $student:Student(age > 20)
-    then
-        $student.setAge(30);
-        // 会导致死循环
-        update($student)
-        System.out.println("匹配到年龄大于20岁");
-end

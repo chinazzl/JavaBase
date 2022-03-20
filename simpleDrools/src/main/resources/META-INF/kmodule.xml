@@ -13,4 +13,8 @@
         -->
         <ksession name="ksession-rule" default="true"/>
     </kbase>
+
+    <kbase  name="kieInnerField" packages="rules_1"  >
+        <ksession name="mysession" />
+    </kbase>
 </kmodule>

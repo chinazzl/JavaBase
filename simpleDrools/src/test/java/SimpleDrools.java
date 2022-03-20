@@ -122,4 +122,23 @@ public class SimpleDrools {
         kieSession.dispose();
     }
 
+    @Test
+    public void testActiveGroup() {
+        KieContainer kieClasspathContainer = KieServices.get().newKieClasspathContainer();
+        KieBase kieInnerField = kieClasspathContainer.getKieBase("kieInnerField");
+        KieSession kieSession = kieInnerField.newKieSession();
+        kieSession.fireAllRules();
+        kieSession.dispose();
+    }
+
+    @Test
+    public void testAgentGroup() {
+        KieContainer kieClasspathContainer = KieServices.get().newKieClasspathContainer();
+        KieBase kieInnerField = kieClasspathContainer.getKieBase("kieInnerField");
+        KieSession kieSession = kieInnerField.newKieSession();
+        kieSession.getAgenda().getAgendaGroup("myagendaGroup").setFocus();
+        kieSession.fireAllRules();
+        kieSession.dispose();
+    }
+
 }
