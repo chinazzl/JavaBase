@@ -92,7 +92,7 @@ public class SimpleDrools {
         kieSession.dispose();
     }
 
-    // 内置方法
+    // 内置方法 update
     @Test
     public void testUpdateRule() {
         KieServices kieServices = KieServices.Factory.get();
@@ -109,4 +109,17 @@ public class SimpleDrools {
         System.out.println("扫描规则共 " + m + "个");
         kieSession.dispose();
     }
+
+    // 内置方法 insert
+    @Test
+    public void testInsert() {
+        KieServices kieServices = KieServices.get();
+        KieSession kieSession = kieServices.newKieClasspathContainer().newKieSession();
+        Student student = new Student();
+        student.setAge(30);
+        kieSession.insert(student);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+    }
+
 }

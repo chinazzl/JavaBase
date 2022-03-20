@@ -111,7 +111,7 @@
    7. 线程安全与数据同步
       1. Synchronized关键字
          1. Synchronized 关键字提供了一种锁机制，能够确保共享变量的互斥访问，从而防止数据不一致出现的问题
-         2. Synchronized 关键字包括monitor enter 和 monitor exit 两个JVM指令，它能够保证在任何时候任何线程执行到monitor　enter成功之前都必须从主内存中获取数据，而不是从缓存中，在monitor　ｅｘｉｔ运行成功之后，共享变量被更新后的值必须刷入主内存
+         2. Synchronized 关键字包括monitor enter 和 monitor exit 两个JVM指令，它能够保证在任何时候任何线程执行到monitor　enter成功之前都必须从主内存中获取数据，而不是从缓存中，在monitor　exit运行成功之后，共享变量被更新后的值必须刷入主内存
          3. Synchronized的指令严格遵守Java　happen－before　规则，一个monitor　exit 指令之前必定要有一个monitor enter
             1. Monitor enter：每一个都与一个monitor相关联，一个monitor的lock 的锁只能被一个线程在同一时间获得，在一个线程尝试获得与对象关联 monitor 得所有权时 会发生如下几件事情
                - 如果monitor 得计数器为0 则意味着该monitor 得lock还没有被获得，某个线程获得之后将立即对该计数器加一，从此该线程就是这个monitor 得所有者
