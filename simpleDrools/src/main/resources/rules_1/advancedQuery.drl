@@ -1,0 +1,14 @@
+package rules_1;
+dialect  "mvel"
+
+import org.testdrools.entity.Student;
+
+// 无参的query
+query "getStudentByAge"
+    $s:Student(age == 50);
+end
+
+// 有参的query
+query "getStudentByAgeAndName"(String userName)
+    $s:Student(age>5 && name == userName)
+end
