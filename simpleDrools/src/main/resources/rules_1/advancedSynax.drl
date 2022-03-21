@@ -1,0 +1,28 @@
+package rules_1;
+dialect  "mvel"
+import java.util.List;
+import java.lang.Integer;
+
+global List<String> gList;
+global Integer count;
+
+/*
+     使用 global 包装类型，在每个规则中只是一个副本，一个规则进行修改全局便量不会影响其他的规则调用全局变量
+     使用 global 集合类型，在每个规则调用修改全局属性，其他规则再次进行修改也会获取其他规则修改后的数据
+     使用 global javaBean，在每个规则调用修改全局属性，其他规则再次进行修改也会获取其他规则修改后的数据
+*/
+rule "advanced_global_boxed"
+    when
+    then
+        count+=10;
+        gList.add("Oner");
+        System.out.println("global 包装类型修改后的count值 " + count + ", global List集合 gList size：" + gList.size());
+end
+
+rule "advanced_global_boxed_1"
+    when
+    then
+        gList.add("Faker");
+        System.out.println("global 包装类型 count的值 " + count + ", global List集合 gList size：" + gList.size());
+end
+

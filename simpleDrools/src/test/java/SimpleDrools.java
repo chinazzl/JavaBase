@@ -37,7 +37,7 @@ public class SimpleDrools {
         KieSession kieSession = kieBase.newKieSession();
         // 创建会话 用于和规则引擎交互
 //        KieSession kieSession = kieClasspathContainer.newKieSession("ksession-rule");
-        Order order = new Order(210d,0d);
+        Order order = new Order(210d, 0d);
         // 将数据 存入 工作内存
         kieSession.insert(order);
         // 激活规则 引擎 ，扫描所有的规则
@@ -51,7 +51,7 @@ public class SimpleDrools {
      * 使用比较语法
      */
     @Test
-    public void  testCompareOper() {
+    public void testCompareOper() {
         KieServices kieServices = KieServices.Factory.get();
         KieSession kieSession = kieServices.getKieClasspathContainer().newKieSession();
         ComparationOperation comparationOperation = new ComparationOperation();
@@ -105,7 +105,7 @@ public class SimpleDrools {
 
         student.setAge(15);
         kieSession.insert(student);
-        int m= kieSession.fireAllRules();
+        int m = kieSession.fireAllRules();
         System.out.println("扫描规则共 " + m + "个");
         kieSession.dispose();
     }
@@ -138,6 +138,20 @@ public class SimpleDrools {
         KieSession kieSession = kieInnerField.newKieSession();
         kieSession.getAgenda().getAgendaGroup("myagendaGroup").setFocus();
         kieSession.fireAllRules();
+        kieSession.dispose();
+    }
+
+    @Test
+    public void testGlobalBoxed() {
+        KieContainer kieClasspathContainer = KieServices.get().newKieClasspathContainer();
+        KieBase kieInnerField = kieClasspathContainer.getKieBase("kieInnerField");
+        KieSession kieSession = kieInnerField.newKieSession();
+        kieSession.setGlobal("count", 10);
+        List<String> gList = new ArrayList<>();
+        gList.add("T1");
+        kieSession.setGlobal("gList", gList);
+        kieSession.fireAllRules(new RuleNameStartsWithAgendaFilter("advanced_global"));
+        System.out.println("gList result：" + gList);
         kieSession.dispose();
     }
 
