@@ -1,3 +1,4 @@
+import org.drools.core.base.RuleNameStartsWithAgendaFilter;
 import org.junit.Test;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
@@ -7,12 +8,29 @@ import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
 import org.testdrools.entity.Student;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**********************************
  * @author zhang zhao lin
  * @date 2022年03月21日 21:57
  * @Description:
  **********************************/
 public class AdvanceSyntaxTest {
+
+    @Test
+    public void testGlobalBoxed() {
+        KieContainer kieClasspathContainer = KieServices.get().newKieClasspathContainer();
+        KieBase kieInnerField = kieClasspathContainer.getKieBase("kieInnerField");
+        KieSession kieSession = kieInnerField.newKieSession();
+        kieSession.setGlobal("count", 10);
+        List<String> gList = new ArrayList<>();
+        gList.add("T1");
+        kieSession.setGlobal("gList", gList);
+        kieSession.fireAllRules(new RuleNameStartsWithAgendaFilter("advanced_global"));
+        System.out.println("gList result：" + gList);
+        kieSession.dispose();
+    }
 
     /**
      * query
@@ -62,6 +80,31 @@ public class AdvanceSyntaxTest {
         kieSession.insert(student1);
         int i = kieSession.fireAllRules();
         System.out.println(i);
+        kieSession.dispose();
+    }
+
+    @Test
+    public void testLHSPlus() {
+        KieContainer container = KieServices.get().getKieClasspathContainer();
+        KieBase kieInnerField = container.getKieBase("kieInnerField");
+        KieSession kieSession = kieInnerField.newKieSession();
+        Student student = new Student();
+        student.setAge(5);
+        student.setName("zs");
+        kieSession.insert(student);
+        kieSession.fireAllRules(new RuleNameStartsWithAgendaFilter("LHSPlus_"));
+        kieSession.dispose();
+    }
+
+    @Test
+    public void testRHSPlusTest() {
+        KieContainer container = KieServices.get().getKieClasspathContainer();
+        KieBase kieBase = container.getKieBase("kieInnerField");
+        KieSession kieSession = kieBase.newKieSession();
+        Student student = new Student();
+        student.setAge(20);
+        kieSession.insert(student);
+        kieSession.fireAllRules(new RuleNameStartsWithAgendaFilter("RHSPLUS_"));
         kieSession.dispose();
     }
 }

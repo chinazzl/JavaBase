@@ -1,0 +1,42 @@
+package rules_1;
+dialect  "mvel"
+
+import org.testdrools.entity.Student;
+
+/*
+    LHS增强，in, not in, not, exists, extend
+*/
+rule "LHSPlus_in"
+    when
+        Student(name in ("zs","ls","ww"))
+    then
+        System.out.println("LHSPlus_in 存在 zs、ls、ww的名字");
+end
+
+rule "LHSPlus_not in"
+    when
+        Student(name not in ("zs","ls","ww"))
+    then
+        System.out.println("LHSPlus_not in 不存在 zs、ls、ww的名字");
+end
+
+rule "LHSPlus_not"
+    when
+        not Student(age > 10)
+    then
+        System.out.println("LHSPlus_not 不存在 age > 10");
+end
+
+rule "LHSPlus_exist"
+    when
+        exists Student(age < 20)
+    then
+        System.out.println("LHSPlus_exist 存在 age < 20");
+end
+
+rule "LHSPlus_extends" extends "LHSPlus_in"
+    when
+        Student(age < 15)
+    then
+        System.out.println("LHSPlus_extends 继承 LHSPlus_in的规则，存在 zs、ls、ww的名字 并且 age < 15");
+end

@@ -141,18 +141,4 @@ public class SimpleDrools {
         kieSession.dispose();
     }
 
-    @Test
-    public void testGlobalBoxed() {
-        KieContainer kieClasspathContainer = KieServices.get().newKieClasspathContainer();
-        KieBase kieInnerField = kieClasspathContainer.getKieBase("kieInnerField");
-        KieSession kieSession = kieInnerField.newKieSession();
-        kieSession.setGlobal("count", 10);
-        List<String> gList = new ArrayList<>();
-        gList.add("T1");
-        kieSession.setGlobal("gList", gList);
-        kieSession.fireAllRules(new RuleNameStartsWithAgendaFilter("advanced_global"));
-        System.out.println("gList result：" + gList);
-        kieSession.dispose();
-    }
-
 }

@@ -1,0 +1,42 @@
+package rules_1;
+dialect  "mvel"
+
+import org.testdrools.entity.Student
+import org.drools.core.WorkingMemory
+import org.drools.core.definitions;
+
+
+/*
+    RHS增强 halt：阻止后续的规则进行匹配执行
+           getWorkingMemory 获取  工作内存
+           getRule 返回规则对象。
+
+*/
+rule "RHSPLUS_halt"
+    when
+        Student(age > 15)
+    then
+        drools.halt();
+        System.out.println("halt 后续的规则执行");
+end
+
+rule "RHSPLUS_normal"
+    when
+        Student(age > 20)
+    then
+        System.out.println("执行some rules");
+end
+
+rule "RHSPLUS_WORKMEM"
+    when
+    then
+        WorkingMemory workingMemory = drools.getWorkingMemory();
+        System.out.println(workingMemory.getKnowledgeBase());
+end
+
+rule "RHSPLUS_RULES" extends "RHSPLUS_normal"
+    when
+    then
+        org.drools.core.definitions.rule.impl.RuleImpl rule = drools.getRule();
+        System.out.println(rule.getChildren());
+end
