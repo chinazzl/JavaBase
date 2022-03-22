@@ -1,9 +1,9 @@
 package rules_1;
-dialect  "mvel"
+dialect  "java"
 
 import org.testdrools.entity.Student
 import org.drools.core.WorkingMemory
-import org.drools.core.definitions;
+import org.drools.core.definitions.*;
 
 
 /*
@@ -17,7 +17,7 @@ rule "RHSPLUS_halt"
         Student(age > 15)
     then
         drools.halt();
-        System.out.println("halt 后续的规则执行");
+        System.out.println("halt 禁止 后续的规则执行");
 end
 
 rule "RHSPLUS_normal"
