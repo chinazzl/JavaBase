@@ -1,6 +1,12 @@
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kie.api.KieBase;
+import org.kie.api.cdi.KBase;
+import org.kie.api.runtime.KieSession;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.MessageFormat;
 
@@ -10,6 +16,8 @@ import java.text.MessageFormat;
  * @Description:
  * @Date: 2022/3/8 10:21
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/application.xml")
 public class TxSpringTest {
 
     @Test
@@ -21,6 +29,17 @@ public class TxSpringTest {
 
         String format = MessageFormat.format(st, "first", "second");
         System.out.println(format);
+    }
+
+    @KBase("kbase")
+    private KieBase kieBase;
+    @Test
+    public void kieForSpring() {
+        System.out.println(kieBase.getKiePackages().size());
+        KieSession kieSession = kieBase.newKieSession();
+        int i = kieSession.fireAllRules();
+        System.out.println(i);
+        kieSession.dispose();
     }
 
 

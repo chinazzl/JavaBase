@@ -1,0 +1,9 @@
+package rules;
+dialect  "mvel"
+
+rule "first"
+    when
+        eval(true)
+    then
+        System.out.println("规则：整合spring规则111。");
+end
