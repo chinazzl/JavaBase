@@ -1,11 +1,11 @@
-package org.testdrools.entity;
+package com.testdemo.studentproject;
 
 import java.io.Serializable;
 
 /**
  * @author Julyan
  * @version V1.0
- * @Description:
+ * @Description: 通过workbench 扫描到规则使用的实体类。路径必须相同！
  * @Date: 2022/3/18 17:02
  */
 public class Student implements Serializable {
