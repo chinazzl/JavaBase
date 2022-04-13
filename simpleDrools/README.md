@@ -80,7 +80,7 @@ public boolean checkUser(User user){
 
 如果用户信息合法性检查通过后，还需要通过如下代码确定用户所办信用卡的额度：
 
-```
+``` java
 //此处为伪代码
 
 //根据用户输入信息确定信用卡额度
@@ -292,7 +292,7 @@ public class Order {
 
 第四步：创建规则文件resources/rules/bookDiscount.drl
 
-```java
+```drl
 //图书优惠规则
 package book.discount
 import com.itheima.drools.entity.Order
@@ -448,7 +448,7 @@ Drools支持的规则文件，除了drl形式，还有Excel文件类型的。
 
 规则体语法结构如下：
 
-```java
+```drools
 rule "ruleName"
     attributes
     when
@@ -480,7 +480,7 @@ end
 
 单行注释用"//"进行标记，多行注释以"/*"开始，以"*/"结束。如下示例：
 
-```drl
+```drools
 //规则rule1的注释，这是一个单行注释
 rule "rule1"
     when
@@ -513,7 +513,7 @@ end
 
 例如我们的入门案例中：
 
-```java
+```drools
 //规则二：所购图书总价在100到200元的优惠20元
 rule "book_discount_2"
     when
@@ -651,7 +651,7 @@ public class ComparisonOperatorEntity {
 
 第二步：在/resources/rules下创建规则文件comparisonOperator.drl
 
-```drl
+```drools
 package comparisonOperator
 import com.itheima.drools.entity.ComparisonOperatorEntity
 /*
@@ -777,7 +777,7 @@ Drools的关键字分为：硬关键字(Hard keywords)和软关键字(Soft keywo
 
 
 
-```java、、
+```drools
 比如：
 rule true  //不可以
 rule "true"  //可以
@@ -836,7 +836,7 @@ public class Student {
 
 第一步：编写规则文件/resources/rules/student.drl，文件内容如
 
-```java
+```drools
 package student
 import com.itheima.drools.entity.Student
 
@@ -901,7 +901,7 @@ insert方法的作用是向工作内存中插入数据，并让相关的规则�
 
 第一步：修改student.drl文件内容如下
 
-```
+```drools
 package student
 import com.itheima.drools.entity.Student
 
@@ -974,7 +974,7 @@ kieSession.dispose();
 
 第一步：修改student.drl文件内容如下
 
-```java
+```drools
 package student
 import com.itheima.drools.entity.Student
 
@@ -1058,7 +1058,7 @@ kieSession.dispose();
 
 前面我们已经知道了规则体的构成如下：
 
-```java
+```drools
 rule "ruleName"
     attributes
     when
@@ -1089,7 +1089,7 @@ enabled属性对应的取值为true和false，默认值为true。
 
 用于指定当前规则是否启用，如果设置的值为false则当前规则无论是否匹配成功都不会触发
 
-```java
+```drools
 rule "rule_comparison_notMemberOf"
     //指定当前规则不可用，当前规则无论是否匹配成功都不会执行
     enabled false
@@ -1118,7 +1118,7 @@ salience属性用于指定规则的执行优先级，**取值类型为Integer**�
 
 可以通过创建规则文件salience.drl来测试salience属性，内容如下：
 
-```
+```drools
 package test.salience
 
 rule "rule_1"
@@ -1147,7 +1147,7 @@ end
 
 通过控制台可以看到，由于以上三个规则没有设置salience属性，所以执行的顺序是按照规则文件中规则的顺序由上到下执行的。接下来我们修改一下文件内容：
 
-```
+```drools
 package testsalience
 
 rule "rule_1"
@@ -1187,7 +1187,7 @@ no-loop属性用于防止死循环，当规则通过update之类的函数修改�
 
 第一步：编写规则文件/resource/rules/noloop.drl
 
-```
+```drools
 package testnoloop
 import com.itheima.drools.entity.Student
 /*
@@ -1207,7 +1207,7 @@ end
 
 第二步：编写单元测试
 
-```
+```java
 KieServices kieServices = KieServices.Factory.get();
 KieContainer kieClasspathContainer = kieServices.getKieClasspathContainer();
 KieSession kieSession = kieClasspathContainer.newKieSession();
@@ -1234,7 +1234,7 @@ activation-group属性是指**激活分组**，取值为String类型。具有相
 
 
 
-```
+```drools
 package testactivationgroup
 /*
     此规则文件用于测试activation-group属性
@@ -1259,7 +1259,7 @@ end
 
 第二步：编写单元测试
 
-```
+```java
 KieServices kieServices = KieServices.Factory.get();
 KieContainer kieClasspathContainer = kieServices.getKieClasspathContainer();
 KieSession kieSession = kieClasspathContainer.newKieSession();
@@ -1279,7 +1279,7 @@ agenda-group属性为**议程分组**，属于另一种可控的规则执行方�
 
 
 
-```java
+```drools
 package testagendagroup
 /*
     此规则文件用于测试agenda-group属性
@@ -1339,7 +1339,7 @@ auto-focus属性为**自动获取焦点**，取值类型为Boolean，默认值�
 
 第一步：修改/resources/rules/agendagroup.drl文件内容如下
 
-```java
+```drools
 package testagendagroup
 
 rule "rule_agendagroup_1"
@@ -1405,7 +1405,7 @@ timer属性可以通过定时器的方式指定规则执行的时间，使用方
 
 第一步：创建规则文件/resources/rules/timer.drl
 
-```
+```drools
 package testtimer
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -1462,7 +1462,7 @@ date-effective属性**用于指定规则的生效时间**，即只有当前系�
 
 第一步：编写规则文件/resources/rules/dateeffective.drl
 
-```
+```drools
 package testdateeffective
 /*
     此规则文件用于测试date-effective属性
@@ -1499,7 +1499,7 @@ date-expires属性用于指定规则的**失效时间**，即只有当前系统�
 
 第一步：编写规则文件/resource/rules/dateexpires.drl
 
-```
+```drools
 package testdateexpires
 /*
     此规则文件用于测试date-expires属性
@@ -1563,7 +1563,7 @@ global关键字用于在规则文件中**定义全局变量**，它可以让应�
 下面我们通过代码进行验证：
 
 第一步：创建UserService类
-```
+```java
 package com.itheima.drools.service;
 
 public class UserService {
@@ -1576,7 +1576,7 @@ public class UserService {
 
 
 第二步：编写规则文件/resources/rules/global.drl
-```
+```drools
 package testglobal
 /*
     此规则文件用于测试global全局变量
@@ -1609,7 +1609,7 @@ end
 
 
 第三步：编写单元测试
-```
+```java
 KieServices kieServices = KieServices.Factory.get();
 KieContainer kieClasspathContainer = kieServices.getKieClasspathContainer();
 KieSession kieSession = kieClasspathContainer.newKieSession();
@@ -1636,7 +1636,7 @@ System.out.println(list.size());
 ### 6.2 query查询
 
 query查询提供了一种**查询working memory中符合约束条件的Fact对象**的简单方法。它仅包含规则文件中的LHS部分，不用指定“when”和“then”部分并且以end结束。具体语法结构如下：
-```
+```drools
 query 查询的名称(可选参数)
     LHS
 end
@@ -1647,7 +1647,7 @@ end
 具体操作步骤：
 
 第一步：编写规则文件/resources/rules/query.drl
-```
+```drools
 package testquery
 import com.itheima.drools.entity.Student
 /*
@@ -1671,7 +1671,7 @@ end
 
 第二步：编写单元测试
 
-```
+```java
 KieServices kieServices = KieServices.Factory.get();
 KieContainer kieClasspathContainer = kieServices.getKieClasspathContainer();
 KieSession kieSession = kieClasspathContainer.newKieSession();
@@ -1721,7 +1721,7 @@ kieSession.dispose();
 function关键字用于在规则文件中定义函数，就相当于java类中的方法一样。可以在规则体中调用定义的函数。使用函数的好处是可以将业务逻辑集中放置在一个地方，根据需要可以对函数进行修改。
 
 函数定义的语法结构如下：
-```java
+```drools
 function 返回值类型 函数名(可选参数){
     //逻辑代码
 }
@@ -1732,7 +1732,7 @@ function 返回值类型 函数名(可选参数){
 具体操作步骤：
 
 第一步：编写规则文件/resources/rules/function.drl
-```java
+```drools
 package testfunction
 import com.itheima.drools.entity.Student
 /*
@@ -1786,7 +1786,7 @@ kieSession.dispose();
 
 举例：
 
-```
+```drools
 $s:Student(name in ("张三","李四","王五"))
 $s:Student(name not in ("张三","李四","王五"))
 ```
@@ -1800,7 +1800,7 @@ eval用于规则体的LHS部分，并返回一个Boolean类型的值。语法结
 **eval(表达式)**
 
 举例：
-```
+```drools
 eval(true)
 eval(false)
 eval(1 == 1)
@@ -1815,7 +1815,7 @@ not用于判断Working Memory中是否存在某个Fact对象，如果不存在�
 **not Object(可选属性约束)**
 
 举例：
-```
+```drools
 not Student()
 not Student(age < 10)
 ```
@@ -1829,7 +1829,7 @@ exists的作用与not相反，用于判断Working Memory中是否存在某个Fac
 **exists Object(可选属性约束)**
 
 举例：
-```
+```drools
 exists Student()
 exists Student(age < 10 && name != null)
 ```
@@ -1843,7 +1843,7 @@ exists Student(age < 10 && name != null)
 例如：
 
 规则文件(只有规则体)：
-```
+```drools
 rule "使用exists的规则"
     when
         exists Student()
@@ -1862,7 +1862,7 @@ end
 
 
 Java代码：
-```
+```java
 kieSession.insert(new Student());
 kieSession.insert(new Student());
 kieSession.fireAllRules();
@@ -1878,7 +1878,7 @@ kieSession.fireAllRules();
 
 例如：
 
-```
+```drools
 rule "rule_1"
     when
         Student(age > 10)
@@ -1909,7 +1909,7 @@ RHS部分是规则体的重要组成部分，当LHS部分的条件匹配成功�
 #### 6.5.1 halt
 
 halt方法的作用是**立即终止后面所有规则的执行**。
-```java
+```drools
 package testhalt
 rule "rule_halt_1"
     when
@@ -1932,7 +1932,7 @@ end
 
 getWorkingMemory方法的作用是返回工作内存对象。
 
-```java
+```drools
 package testgetWorkingMemory
 rule "rule_getWorkingMemory"
     when
@@ -1946,7 +1946,7 @@ end
 #### 6.5.3 getRule
 
 getRule方法的作用是返回规则对象。
-```java
+```drools
 package testgetRule
 rule "rule_getRule"
     when
@@ -2051,7 +2051,7 @@ end
 
 第二步：创建规则目录/resources/rules，中rules目录中创建规则文件helloworld.drl
 
-```java
+```drools
 package helloworld
 
 rule "rule_helloworld"
@@ -2088,7 +2088,7 @@ end
 
 第四步：编写单元测试类
 
-```
+```java
 package com.itheima.test;
 
 import org.junit.Test;
@@ -2287,7 +2287,7 @@ public class DroolsSpringTest {
 
 第四步：创建规则文件/resources/rules/helloworld.drl
 
-```
+```drools
 package helloworld
 
 rule "rule_helloworld"
@@ -2469,7 +2469,7 @@ public class HelloController {
 
 第二步：创建/resources/application.yml文件
 
-```
+```yaml
 server:
   port: 8080
 spring:
@@ -2481,7 +2481,7 @@ spring:
 
 第三步：创建规则文件/resources/rules/helloworld.drl
 
-```
+```drools
 package helloworld
 rule "rule_helloworld"
     when
@@ -2562,7 +2562,7 @@ public class DroolsConfig {
 
 第五步：创建RuleService类
 
-```
+```java
 package com.itheima.drools.service;
 
 import org.kie.api.KieBase;
@@ -2586,7 +2586,7 @@ public class RuleService {
 
 第六步：创建HelloController类
 
-```
+```java
 package com.itheima.drools.controller;
 
 import com.itheima.drools.service.RuleService;
@@ -2611,7 +2611,7 @@ public class HelloController {
 
 第七步：创建启动类DroolsApplication
 
-```
+```java
 package com.itheima.drools;
 
 import org.springframework.boot.SpringApplication;
@@ -2656,7 +2656,7 @@ WorkBench是KIE组件中的元素，也称为KIE-WB，是Drools-WB与JBPM-WB的�
 
 第二步：在Tomcat的bin目录下创建setenv.bat文件，内容如下：
 
-```
+```properties
 CATALINA_OPTS="-Xmx512M \
     -Djava.security.auth.login.config=$CATALINA_HOME/webapps/kie-drools-wb/WEB-INF/classes/login.config \
     -Dorg.jboss.logging.provider=jdk"
@@ -2685,7 +2685,7 @@ CATALINA_OPTS="-Xmx512M \
 
 第五步：下载以下三个jar包并复制到Tomcat的lib目录下
 
-```
+```text
 kie-tomcat-integration-7.10.0.Final.jar
 javax.security.jacc-api-1.5.jar
 slf4j-api-1.7.25.jar
@@ -3370,7 +3370,7 @@ public class Calculation {
 
 第五步：在resources/rules下创建规则文件calculation.drl文件
 
-```java
+```drools
 package calculation
 import com.itheima.drools.entity.Calculation
 

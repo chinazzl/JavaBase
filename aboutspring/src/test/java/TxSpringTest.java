@@ -29,6 +29,11 @@ public class TxSpringTest {
 
         String format = MessageFormat.format(st, "first", "second");
         System.out.println(format);
+
+        String s = "xxx%s";
+        String aa = String.format(s, "aa");
+        System.out.println(aa);
+
     }
 
     @KBase("kbase")
