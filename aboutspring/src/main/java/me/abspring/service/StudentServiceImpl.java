@@ -17,7 +17,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @Description:
  **********************************/
 @Service("studentService")
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl extends AbstractStudentService implements StudentService {
 
     @Autowired
     private StudentDao studentDao;
@@ -41,6 +41,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional
     public int addStudent(Student student) {
+        test();
         AnOtherTb anOtherTb = new AnOtherTb();
         anOtherTb.setName(student.getName());
         anOtherTb.setEmail("xx@test.com");

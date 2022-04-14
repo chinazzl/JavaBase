@@ -2,6 +2,7 @@
 package rules
 
 import org.testdrools.entity.Order;
+import java.util.List;
 
 // 规则一
 rule under100
@@ -42,3 +43,10 @@ rule marethan300
          System.out.println("匹配规则四：所购总价100元以下优惠100");
 end
 
+rule "handLeList"
+when
+    $l:List(size()>0);
+    $oder:Order() from $l;
+then
+    System.out.println($oder.getOriginalPrice());
+ end

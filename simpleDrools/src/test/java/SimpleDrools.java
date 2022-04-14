@@ -37,9 +37,15 @@ public class SimpleDrools {
         KieSession kieSession = kieBase.newKieSession();
         // 创建会话 用于和规则引擎交互
 //        KieSession kieSession = kieClasspathContainer.newKieSession("ksession-rule");
+        List<Order> list = new ArrayList<>();
         Order order = new Order(210d, 0d);
+        Order order1= new Order(210d, 0d);
+        Order order2 = new Order(210d, 0d);
+        list.add(order);
+        list.add(order1);
+        list.add(order2);
         // 将数据 存入 工作内存
-        kieSession.insert(order);
+        kieSession.insert(list);
         // 激活规则 引擎 ，扫描所有的规则
         int i = kieSession.fireAllRules();
         System.out.println("扫描规则共 " + i + "个");

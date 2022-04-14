@@ -27,6 +27,7 @@ public class SemaphoreTest {
             } finally {
                 semaphore.release();
             }
+            System.out.println("lallala ===>" + i);
         }).start());
         System.out.println("====== process finished if before ended means asyc process =====");
         Thread.currentThread().join();
