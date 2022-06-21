@@ -60,5 +60,9 @@ public class SimpleTest {
     public void mathRound() {
         System.out.println(Math.round(-1.2));
         System.out.println(Math.round(1.2));
+        double d = 20;
+        System.out.println(d/100);
+        int i = 10;
+        System.out.println(i/d);
     }
 }
