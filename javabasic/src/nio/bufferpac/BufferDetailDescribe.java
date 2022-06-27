@@ -1,6 +1,5 @@
 package nio.bufferpac;
 
-import langer.Ex;
 
 import java.nio.Buffer;
 import java.nio.CharBuffer;
