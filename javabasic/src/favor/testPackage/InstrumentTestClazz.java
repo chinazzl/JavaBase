@@ -8,8 +8,9 @@ import java.util.HashSet;
 
 /**
  * 测试复合优于继承
- * @see Effetive in Java
+ *
  * @author Julyn
+ * @see Effetive in Java
  */
 public class InstrumentTestClazz {
     public static void main(String[] args) {
@@ -22,12 +23,12 @@ public class InstrumentTestClazz {
         所以返回结果为6
          */
         InstrumentHashSet instrumentHashSet = new InstrumentHashSet();
-        instrumentHashSet.addAll(Arrays.asList("Snap","Cookie","Pop"));
+        instrumentHashSet.addAll(Arrays.asList("Snap", "Cookie", "Pop"));
         int addCount = instrumentHashSet.getAddCount();
         System.out.println(addCount);
         System.out.println("=========================");
         InstrumentSetClazz instrumentSetClazz = new InstrumentSetClazz(new HashSet());
-        instrumentSetClazz.addAll(Arrays.asList("Snap","Cookie","Pop"));
+        instrumentSetClazz.addAll(Arrays.asList("Snap", "Cookie", "Pop"));
         instrumentSetClazz.getAddCount();
     }
 }

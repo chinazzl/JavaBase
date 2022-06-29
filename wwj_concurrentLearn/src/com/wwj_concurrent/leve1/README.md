@@ -150,8 +150,6 @@
             }
             ```
 
-            
-
       3. this MOnitor 和 Class Monitor
 
    8. wait 和 notify
