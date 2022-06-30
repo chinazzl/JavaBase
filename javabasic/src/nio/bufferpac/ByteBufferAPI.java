@@ -18,8 +18,8 @@ public class ByteBufferAPI {
 
     public static void main(String[] args) {
 //        buildByteBuffer();
-//        api_putOrGet();
-        putByteArray();
+        api_putOrGet();
+//        putByteArray();
 //        api_putType();
 //        api_slice();
 //        api_asCharBuffer();
@@ -189,6 +189,34 @@ public class ByteBufferAPI {
         allocate.get(byteOutArr, 3, 4);
         for (int i = 0; i < byteOutArr.length; i++) {
             System.out.print(byteOutArr[i] + " ");
+        }
+        System.out.println("\n === put([] byte)  method begin ===");
+        ByteBuffer byteBuffer = ByteBuffer.allocate(12);
+        byteBuffer.put((byte) 10);
+        byteBuffer.put((byte) 11);
+        System.out.println("A= " + byteBuffer.position());
+        byteBuffer.put(byteArray);
+        System.out.println("B = " + byteBuffer.position());
+        byteBuffer.flip();
+        byteBuffer.position(3);
+        System.out.println("C = " + byteBuffer.position());
+        byte[] newArray = new byte[byteBuffer.remaining()];
+        byteBuffer.get(newArray);
+        for (int i = 0; i < newArray.length; i++) {
+            System.out.print(newArray[i] + " ");
+        }
+        System.out.println("\n === put(index i ) method begin");
+        ByteBuffer buffer = ByteBuffer.allocate(12);
+        buffer.put(byteArray);
+        buffer.put(1,(byte) 12);
+        buffer.put(11,(byte) 14);
+        System.out.println("A = " + buffer.position());
+        byte b = buffer.get(1);
+        System.out.println("B=" + b);
+        byte[] bytesArr = new byte[buffer.capacity()];
+        buffer.get(bytesArr,0,3);
+        for (int i = 0; i < bytesArr.length; i++) {
+            System.out.print(bytesArr[i] + " ");
         }
 
     }
