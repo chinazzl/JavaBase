@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import static nio.bufferpac.DataConstraint.*;
 
 /**
  * @author zhangzhaolin
@@ -18,10 +19,11 @@ public class ByteBufferAPI {
     public static void main(String[] args) {
 //        buildByteBuffer();
 //        api_putOrGet();
+        putByteArray();
 //        api_putType();
 //        api_slice();
 //        api_asCharBuffer();
-        api_duplicate();
+//        api_duplicate();
     }
 
     /**
@@ -118,6 +120,33 @@ public class ByteBufferAPI {
         }
         System.out.println(byteBuffer.getDouble() + "====" + byteBuffer.getDouble(4));
 
+    }
+
+    /**
+     * 当参数length的值大于buffer.remaing时，抛出BufferOverflowException异常
+     */
+    private static void putByteArray() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(5);
+        /*
+        byteBuffer.position(7);
+        // 当参数length的值大于buffer.remaing时，抛出BufferOverflowException异常
+        byteBuffer.put(byteArray,1,5);
+        */
+        // 解决：
+        int writeBufferIndex = 0;
+        while (writeBufferIndex < byteArray.length) {
+            int readLength = Math.min(byteBuffer.remaining(), byteArray.length - writeBufferIndex);
+            byteBuffer.put(byteArray,writeBufferIndex,readLength);
+            // 将position 设置为limit
+            byteBuffer.flip();
+            byte[] array = byteBuffer.array();
+            for (int i = 0; i < byteBuffer.limit(); i++) {
+                System.out.print(array[i]+ " ");
+            }
+            writeBufferIndex = writeBufferIndex + readLength;
+            System.out.println();
+            byteBuffer.clear();
+        }
     }
 
     /**
