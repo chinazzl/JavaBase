@@ -1,9 +1,11 @@
 package nio.bufferpac;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
 import static nio.bufferpac.DataConstraint.*;
 
 /**
@@ -18,12 +20,38 @@ public class ByteBufferAPI {
 
     public static void main(String[] args) {
 //        buildByteBuffer();
-        api_putOrGet();
+//        api_putOrGet();
 //        putByteArray();
 //        api_putType();
 //        api_slice();
 //        api_asCharBuffer();
+//        api_order();
+//        api_compact();
+//        api_compareTo();
 //        api_duplicate();
+        api_extendsCapacity();
+    }
+
+    private static void api_extendsCapacity() {
+        ByteBuffer wrap = ByteBuffer.wrap(byteArray2);
+        System.out.println("capacity is " + wrap.capacity() + ", position is " + wrap.position() + ", limit is " + wrap.limit());
+        ByteBuffer newBuffer = extendsCapacity(wrap, 2);
+        byte[] array = newBuffer.array();
+        for (byte b : array) {
+            System.out.print(b + " ");
+        }
+    }
+
+    /**
+     * 对容量进行扩容
+     *
+     * @param buffer
+     * @param extendsSize
+     */
+    private static ByteBuffer extendsCapacity(ByteBuffer buffer, int extendsSize) {
+        ByteBuffer newBuffer = ByteBuffer.allocate(buffer.capacity() + extendsSize);
+        newBuffer.put(buffer);
+        return newBuffer;
     }
 
     /**
@@ -46,7 +74,68 @@ public class ByteBufferAPI {
         for (int i = byteBuffer_copy.position(); i < byteBuffer_copy.limit(); i++) {
             System.out.print(byteBuffer_copy.get(i) + ", ");
         }
+    }
 
+    private static void api_compareTo() {
+        byte[] b_arr = {3, 4, 5};
+        byte[] b_arr2 = {1, 2, 3, 104, 5, 6, 7, 8, 9};
+        ByteBuffer buffer1 = ByteBuffer.wrap(b_arr);
+        ByteBuffer buffer2 = ByteBuffer.wrap(b_arr2);
+        buffer1.position(0);
+        buffer2.position(2);
+        System.out.println("compare To " + buffer1.compareTo(buffer2));
+    }
+
+    /**
+     * compact 压缩方法方法 将position后面的元素 移动到开始ide位置
+     */
+    private static void api_compact() {
+        ByteBuffer wrapBuffer = ByteBuffer.wrap(byteArray);
+        System.out.println("wrapBuffer capacity " + wrapBuffer.capacity() + ",position is " + wrapBuffer.position() + ",limit is " + wrapBuffer.limit());
+        System.out.println("1 wrap buffer value is " + wrapBuffer.get());
+        System.out.println("A wrapBuffer capacity " + wrapBuffer.capacity() + ",position is " + wrapBuffer.position() + ",limit is " + wrapBuffer.limit());
+        System.out.println("2 wrap buffer value is " + wrapBuffer.get());
+        System.out.println("B wrapBuffer capacity " + wrapBuffer.capacity() + ",position is " + wrapBuffer.position() + ",limit is " + wrapBuffer.limit());
+        wrapBuffer.compact();
+        System.out.println("C wrapBuffer capacity " + wrapBuffer.capacity() + ",position is " + wrapBuffer.position() + ",limit is " + wrapBuffer.limit());
+        byte[] array = wrapBuffer.array();
+        for (byte b : array) {
+            System.out.print(b + " ");
+        }
+    }
+
+    private static void api_order() {
+        int value = 123456789;
+        ByteBuffer byteBuffer = ByteBuffer.allocate(4);
+        System.out.println(byteBuffer.order());
+        byteBuffer.putInt(value);
+        byte[] bufferArr = byteBuffer.array();
+        for (byte b : bufferArr) {
+            System.out.print(b + " ");
+        }
+        System.out.println();
+        ByteBuffer byteBuffer1 = ByteBuffer.allocate(4);
+        byteBuffer1.order(ByteOrder.BIG_ENDIAN);
+        System.out.println(byteBuffer.order());
+        byteBuffer1.putInt(value);
+        System.out.println(byteBuffer.position());
+        byteBuffer1.position(0);
+        byte[] bufferArr1 = byteBuffer.array();
+        for (byte b : bufferArr1) {
+            System.out.print(b + " ");
+        }
+        System.out.println("\n BIG_ENDIAN = " + byteBuffer1.order() + " == " + byteBuffer1.getInt());
+
+        ByteBuffer byteBuffer2 = ByteBuffer.allocate(4);
+        byteBuffer2.order(ByteOrder.LITTLE_ENDIAN);
+        System.out.println(byteBuffer2.order());
+        byteBuffer2.putInt(value);
+        byteBuffer2.position(0);
+        byte[] bufferArr2 = byteBuffer2.array();
+        for (byte b : bufferArr2) {
+            System.out.print(b + " ");
+        }
+        System.out.println("\n LITTLE_ENDIAN = " + byteBuffer2.order());
 
     }
 
@@ -57,18 +146,19 @@ public class ByteBufferAPI {
      */
     private static void api_asCharBuffer() {
         //直接定义 编码格式
-        byte[] bytes = "I lulu".getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = "你好啊啊啊".getBytes(StandardCharsets.UTF_8);
         //运行本代码*.java 文件是 UTF-8， System.getProperty("file.encoding") 运行环境取得默认是UTF-8
         System.out.println(Charset.defaultCharset().name());
         ByteBuffer wrap = ByteBuffer.wrap(bytes);
 //        wrap.position(1);
         System.out.println("byteBuffer = " + wrap.getClass().getName());
-        CharBuffer charBuffer = wrap.asCharBuffer();
+//        CharBuffer charBuffer = wrap.asCharBuffer();
+        CharBuffer charBuffer = StandardCharsets.UTF_8.decode(wrap);
         System.out.println("charBuffer = " + charBuffer.getClass().getName());
         System.out.println("wrap capacity is " + wrap.capacity() + ", limit is " + wrap.limit() + ", position is " + wrap.position());
         System.out.println("charBuffer capacity is " + charBuffer.capacity() + ", limit is " + charBuffer.limit() + ", position is " + charBuffer.position());
         charBuffer.position(0);
-        for (int i = 0; i < charBuffer.capacity(); i++) {
+        for (int i = 0; i < charBuffer.limit(); i++) {
             //get() 使用的编码是UTF-16BE 编码并不对称造成 乱码
             System.out.print(charBuffer.get() + "");
 
@@ -93,32 +183,34 @@ public class ByteBufferAPI {
         for (int i = 0; i < bytes1.length; i++) {
             System.out.print(bytes1[i] + ", ");
         }
-        System.out.println();
+        System.out.println("original buffer array offset => " + byteBuffer.arrayOffset());
         for (int i = 0; i < bytes2.length; i++) {
             System.out.print(bytes2[i] + ", ");
         }
         // sliceBuffer 的第一个元素的位置 是 相对于 bytes 数组中索引值为5 的偏移
         System.out.println("slice buffer array offset => " + sliceBuffer.arrayOffset());
+        System.out.println("slice " + sliceBuffer.get(0));
     }
 
     /**
      * putChar() putShort() putInt() putLong() putFloat() putDouble()
      */
     private static void api_putType() {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(20);
         // char 占用2个字节 0-1
         byteBuffer.putChar('a');
+        System.out.println("byteBuffer postion = " + byteBuffer.position());
         byteBuffer.putChar(2, 'b');
         byteBuffer.position(4);
-        // double 占用 8个字节 4 -11
+//        // double 占用 8个字节 4 -11
         byteBuffer.putDouble(2.2);
-        //12-19
-        byteBuffer.putDouble(12, 1.1);
+//        //12-19
+//        byteBuffer.putDouble(12, 1.1);
 
         for (int i = 0; i < byteBuffer.array().length; i++) {
-            System.out.println(byteBuffer.array()[i] + ", ");
+            System.out.print(byteBuffer.array()[i] + ", ");
         }
-        System.out.println(byteBuffer.getDouble() + "====" + byteBuffer.getDouble(4));
+//        System.out.println(byteBuffer.getDouble() + "====" + byteBuffer.getDouble(4));
 
     }
 
@@ -136,12 +228,12 @@ public class ByteBufferAPI {
         int writeBufferIndex = 0;
         while (writeBufferIndex < byteArray.length) {
             int readLength = Math.min(byteBuffer.remaining(), byteArray.length - writeBufferIndex);
-            byteBuffer.put(byteArray,writeBufferIndex,readLength);
+            byteBuffer.put(byteArray, writeBufferIndex, readLength);
             // 将position 设置为limit
             byteBuffer.flip();
             byte[] array = byteBuffer.array();
             for (int i = 0; i < byteBuffer.limit(); i++) {
-                System.out.print(array[i]+ " ");
+                System.out.print(array[i] + " ");
             }
             writeBufferIndex = writeBufferIndex + readLength;
             System.out.println();
@@ -208,15 +300,28 @@ public class ByteBufferAPI {
         System.out.println("\n === put(index i ) method begin");
         ByteBuffer buffer = ByteBuffer.allocate(12);
         buffer.put(byteArray);
-        buffer.put(1,(byte) 12);
-        buffer.put(11,(byte) 14);
+        buffer.put(1, (byte) 12);
+        buffer.put(11, (byte) 14);
         System.out.println("A = " + buffer.position());
         byte b = buffer.get(1);
         System.out.println("B=" + b);
         byte[] bytesArr = new byte[buffer.capacity()];
-        buffer.get(bytesArr,0,3);
+        buffer.get(bytesArr, 0, 3);
         for (int i = 0; i < bytesArr.length; i++) {
             System.out.print(bytesArr[i] + " ");
+        }
+        System.out.println("\n put(Buffer src) method begin");
+        ByteBuffer b1 = ByteBuffer.wrap(byteArray);
+        byte[] bytes = new byte[]{11, 22, 33};
+        ByteBuffer b2 = ByteBuffer.wrap(bytes);
+        b1.position(2);
+        b2.position(2);
+        b1.put(b2);
+        System.out.println("b1 position => " + b1.position());
+        System.out.println("b2 position => " + b2.position());
+        byte[] temp = b1.array();
+        for (int i = 0; i < temp.length; i++) {
+            System.out.printf("%s ", temp[i]);
         }
 
     }

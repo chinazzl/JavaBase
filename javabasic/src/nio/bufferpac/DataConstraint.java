@@ -9,4 +9,6 @@ package nio.bufferpac;
 public interface DataConstraint {
 
     byte[] byteArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    byte[] byteArray2 = {2,5,104};
 }
