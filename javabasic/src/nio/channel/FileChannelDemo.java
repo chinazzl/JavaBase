@@ -1,8 +1,12 @@
 package nio.channel;
 
-import langer.Ex;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -30,7 +34,9 @@ public class FileChannelDemo {
     }
 
     public static void main(String[] args) {
-        fileReader2();
+        fileBatchReader();
+//        fileBatchWriter();
+//        fileReader2();
 //        baseReader();
 //        fileReader();
 //        fileWrite();
@@ -38,12 +44,68 @@ public class FileChannelDemo {
     }
 
     /**
+     * 批量读操作
+     */
+    private static void fileBatchReader() {
+        long readLength = 0;
+        try (FileInputStream fileInputStream = new FileInputStream(new File(logPath)); FileChannel fileChannel = fileInputStream.getChannel()) {
+            ByteBuffer b1 = ByteBuffer.allocate(2);
+            ByteBuffer b2 = ByteBuffer.allocate(2);
+            ByteBuffer[] bs = new ByteBuffer[]{b1, b2};
+            readLength = fileChannel.read(bs);
+            /*
+            System.out.println(readLength); // 4
+            b1.clear();
+            b2.clear();
+            readLength = fileChannel.read(bs);
+            System.out.println(readLength); // 3
+            b1.clear();
+            b2.clear();
+            readLength = fileChannel.read(bs);
+            System.out.println(readLength); //  -1
+            b1.clear();
+            b2.clear();*/
+            for (ByteBuffer byteBuffer : bs) {
+                byte[] bytes = byteBuffer.array();
+                for (byte b : bytes) {
+                    System.out.print((char) b + " ");
+                }
+                System.out.println();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * write 批量操作
+     */
+    private static void fileBatchWriter() {
+        try (FileOutputStream fileInputStream = new FileOutputStream(new File(logPath)); FileChannel fileChannel = fileInputStream.getChannel()) {
+            fileChannel.write(ByteBuffer.wrap("123456".getBytes()));
+            fileChannel.position(3);
+            ByteBuffer byteBuffer1 = ByteBuffer.wrap("00101".getBytes());
+            ByteBuffer byteBuffer2 = ByteBuffer.wrap("00202".getBytes());
+            ByteBuffer[] bs = new ByteBuffer[]{byteBuffer1, byteBuffer2};
+            byteBuffer1.position(1);
+            byteBuffer1.limit(3);
+            byteBuffer2.position(1);
+            byteBuffer2.limit(3);
+            fileChannel.write(bs);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
      * 验证int read(ByteBuffer dst) 方法将字节放入ByteBuffer当前位置
      */
     private static void fileReader2() {
         // ababcd
-        try (FileInputStream fileInputStream = new FileInputStream(new File(logPath));
-             FileChannel fileChannel = fileInputStream.getChannel();) {
+        try (FileInputStream fileInputStream = new FileInputStream(new File(logPath)); FileChannel fileChannel = fileInputStream.getChannel();) {
             // 从索引2的位置开始读
             fileChannel.position(2);
             ByteBuffer byteBuffer = ByteBuffer.allocate(6);
@@ -63,9 +125,11 @@ public class FileChannelDemo {
         }
     }
 
+    /**
+     * 验证 reader(ByteBuffer src)
+     */
     private static void fileReader() {
-        try (FileInputStream fileInputStream = new FileInputStream(new File(logPath));
-             FileChannel fileChannel = fileInputStream.getChannel()) {
+        try (FileInputStream fileInputStream = new FileInputStream(new File(logPath)); FileChannel fileChannel = fileInputStream.getChannel()) {
             ByteBuffer byteBuffer = ByteBuffer.allocate(5);
             int read = fileChannel.read(byteBuffer);
             System.out.println(read);
@@ -82,8 +146,7 @@ public class FileChannelDemo {
      * IO基础
      */
     private static void baseReader() {
-        try (InputStream inputStream = Files.newInputStream(new File(logPath).toPath());
-             OutputStream outputStream = Files.newOutputStream(new File(targetPath).toPath())) {
+        try (InputStream inputStream = Files.newInputStream(new File(logPath).toPath()); OutputStream outputStream = Files.newOutputStream(new File(targetPath).toPath())) {
             int len = -1;
             byte[] bytes = new byte[1024];
             String out = null;
@@ -101,8 +164,7 @@ public class FileChannelDemo {
      * int write(ByteBuffer src) 方法是从通道的当前位置开始写入
      */
     private static void fileWrite() {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(logPath);
-             FileChannel channel = fileOutputStream.getChannel();) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(logPath); FileChannel channel = fileOutputStream.getChannel();) {
             ByteBuffer byteBuffer = ByteBuffer.wrap("abcd".getBytes());
             System.out.println("A fileChannel position =>" + channel.position());
             System.out.println("write() 1 返回值：" + channel.write(byteBuffer));
@@ -126,8 +188,7 @@ public class FileChannelDemo {
      * 说明write是同步的
      */
     private static void fileSyncWriter() {
-        try (FileOutputStream fosRef = new FileOutputStream(logPath);
-             FileChannel fileChannel = fosRef.getChannel();) {
+        try (FileOutputStream fosRef = new FileOutputStream(logPath); FileChannel fileChannel = fosRef.getChannel();) {
             for (int i = 0; i < 10; i++) {
                 Thread t1 = new Thread(() -> {
                     ByteBuffer buffer = ByteBuffer.wrap("abcde\n".getBytes(StandardCharsets.UTF_8));
