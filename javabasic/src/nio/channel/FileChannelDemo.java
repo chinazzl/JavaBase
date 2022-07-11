@@ -3,7 +3,6 @@ package nio.channel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,13 +33,76 @@ public class FileChannelDemo {
     }
 
     public static void main(String[] args) {
-        fileBatchReader();
+        fileBathReadSync();
+        //fileBatchReader();
 //        fileBatchWriter();
 //        fileReader2();
 //        baseReader();
 //        fileReader();
 //        fileWrite();
 //        fileSyncWriter();
+    }
+
+    private static void fileBathReadSync() {
+        try (FileInputStream fileInputStream = new FileInputStream(new File(logPath));
+             FileChannel fileChannel = fileInputStream.getChannel();) {
+            for (int i = 0; i < 10; i++) {
+                Thread t1 = new Thread(() -> {
+                    ByteBuffer b1 = ByteBuffer.allocate(8);
+                    ByteBuffer b2 = ByteBuffer.allocate(7);
+                    ByteBuffer[] bs = {b1, b2};
+                    System.out.println(Thread.currentThread().getName() + " in");
+                    try {
+                        long readLength = fileChannel.read(bs);
+                        while (readLength != -1) {
+                            synchronized (FileChannelDemo.class) {
+                                for (ByteBuffer b : bs) {
+                                    byte[] array = b.array();
+                                    for (byte bt : array) {
+                                        System.out.print((char) bt);
+                                    }
+                                }
+                            }
+                            b1.clear();
+                            b2.clear();
+                            readLength = fileChannel.read(bs);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
+                Thread t2 = new Thread(() -> {
+                    ByteBuffer b1 = ByteBuffer.allocate(10);
+                    ByteBuffer b2 = ByteBuffer.allocate(10);
+                    ByteBuffer[] bs = {b1, b2};
+                    try {
+                        long readLength = fileChannel.read(bs);
+                        while (readLength != -1) {
+                            synchronized (FileChannelDemo.class) {
+                                for (ByteBuffer b : bs) {
+                                    byte[] array = b.array();
+                                    for (byte bt : array) {
+                                        System.out.print((char) bt);
+                                    }
+                                }
+                            }
+                            b1.clear();
+                            b2.clear();
+                            readLength = fileChannel.read(bs);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                t1.start();
+                t2.start();
+                sleep(30);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
