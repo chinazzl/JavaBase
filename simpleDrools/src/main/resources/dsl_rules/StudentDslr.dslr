@@ -1,0 +1,11 @@
+package dsl_rules;
+
+import com.testdemo.studentproject.Student;
+expander StudentDSL.dsl
+
+rule "dslTest"
+    when
+
+    then
+        System.out.println("1");
+end
