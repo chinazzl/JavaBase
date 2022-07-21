@@ -5,7 +5,8 @@ expander StudentDSL.dsl
 
 rule "dslTest"
     when
-
+        There is a Student with
+        -年龄 is less than or equals to 30
     then
-        System.out.println("1");
+        公司赋予你;
 end
