@@ -15,6 +15,16 @@ public class Student implements Serializable {
 
     private int age;
 
+    private String log;
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
+
     public String getName() {
         return name;
     }
@@ -42,8 +52,10 @@ public class Student implements Serializable {
     @Override
     public String toString() {
         return "Student{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", age=" + age +
+                ", log='" + log + '\'' +
                 '}';
     }
 }

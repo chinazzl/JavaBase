@@ -26,6 +26,7 @@ public class DecisionTableDrools {
 
     private static final String DECISION_TABLE_XLSX = "D:\\IdeaProjects\\JavaBase\\simpleDrools\\src\\main\\resources\\META-INF\\simple_decision_table.xlsx";
     private static final String DECISION_TABLE_XLSX_CLASS_PATH = "META-INF/simple_decision_table.xlsx";
+    private static final String TEMPLATE_TABLE_XLSX_CLASS_PATH = "META-INF/simple_template.xlsx";
 
     /**
      * 使用file流进行读取drl
@@ -69,7 +70,7 @@ public class DecisionTableDrools {
         helper.addResource(dslr, ResourceType.DSLR);
         KieSession kieSession = helper.build().newKieSession();
         Student student = new Student();
-        student.setAge(20);
+        student.setAge(50);
         student.setName("张三");
         student.setPost("班长");
         kieSession.insert(student);
@@ -77,5 +78,4 @@ public class DecisionTableDrools {
         System.out.println(student.getPost() + student.getName() + student.getAge());
         kieSession.dispose();
     }
-
 }

@@ -21,4 +21,9 @@
     <kbase name="kie_dsl_rules" packages="dsl_rules" default="true" >
         <ksession name="dslSession"/>
     </kbase>
+
+    <kbase  name="kie_template" packages="rules_template">
+        <ruleTemplate dtable="META-INF/simple_template.xlsx" template="rules_template/templatte.drt" row="2" col="2"/>
+        <ksession name="templateSession"/>
+    </kbase>
 </kmodule>
