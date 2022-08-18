@@ -28,6 +28,13 @@
             <version>7.66.0.Final</version>
             <type>pom</type>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.drools/drools-decisiontables -->
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-decisiontables</artifactId>
+            <version>7.66.0.Final</version>
+        </dependency>
+
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-mvel</artifactId>

@@ -1,0 +1,12 @@
+package dsl_rules;
+
+import com.testdemo.studentproject.Student;
+expander StudentDSL.dsl
+
+rule "dslTest"
+    when
+        There is a Student with
+        -年龄 is less than or equals to 30
+    then
+        公司赋予你;
+end

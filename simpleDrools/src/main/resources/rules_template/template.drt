@@ -1,0 +1,21 @@
+template headerr #注意：template header固定写法，必须在模板的最开始部分
+
+age #age log 表示标题的依次显示数据的列的列表。我们命名第一列为age，第三列 log
+log
+    # 增加一个空行，表示定义结束
+package rules_template
+import org.testdrools.entity.Student;
+global java.util.List list;
+
+# template 关键字通知一个规则模板开始。在一个模板文件中可能超过一个模板。模板应该有一个唯一的名字
+template "cheeseFans"
+# @{row.rowNumber}，它给每个数据行一个唯一的数字，使你能产生唯一的规则名字
+rule "Cheese fanse_@{row.rowNumber}"
+    when
+        Student(age == @{age})
+    then
+        # 在xls中的列数据要与规则模板中用来做操作的类型包括java中的类型要保持一致。否则会报错
+        # 但是要注意 如果用的是String类型的，在模板中引用必须加“ ”的，对于数字类型可以省略不加
+        list.add("@{log}");
+end
+end template

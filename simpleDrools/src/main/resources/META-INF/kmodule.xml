@@ -6,7 +6,7 @@
         packages:指定规则文件的目录，需要根据实际情况填写，否则无法加载到规则文件
         default:指定当前kbase是否为默认
     -->
-    <kbase name="kiebase1" packages="rules" default="true" >
+    <kbase name="kiebase1" packages="rules">
         <!--
             name:指定ksession名称，可以任意，但是需要唯一
             default:指定当前session是否为默认
@@ -16,5 +16,14 @@
 
     <kbase  name="kieInnerField" packages="rules_1"  >
         <ksession name="mysession" />
+    </kbase>
+
+    <kbase name="kie_dsl_rules" packages="dsl_rules" default="true" >
+        <ksession name="dslSession"/>
+    </kbase>
+
+    <kbase  name="kie_template" packages="rules_template">
+        <ruleTemplate dtable="META-INF/simple_template.xlsx" template="rules_template/templatte.drt" row="2" col="2"/>
+        <ksession name="templateSession"/>
     </kbase>
 </kmodule>

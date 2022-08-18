@@ -15,6 +15,16 @@ public class Student implements Serializable {
 
     private int age;
 
+    private String post;
+
+    public String getPost() {
+        return post;
+    }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
     public String getName() {
         return name;
     }
@@ -42,8 +52,10 @@ public class Student implements Serializable {
     @Override
     public String toString() {
         return "Student{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", age=" + age +
+                ", post='" + post + '\'' +
                 '}';
     }
 }
