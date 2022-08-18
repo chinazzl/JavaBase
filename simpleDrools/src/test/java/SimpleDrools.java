@@ -39,8 +39,8 @@ public class SimpleDrools {
 //        KieSession kieSession = kieClasspathContainer.newKieSession("ksession-rule");
         List<Order> list = new ArrayList<>();
         Order order = new Order(210d, 0d);
-        Order order1= new Order(210d, 0d);
-        Order order2 = new Order(210d, 0d);
+        Order order1= new Order(150d, 0d);
+        Order order2 = new Order(300d, 0d);
         list.add(order);
         list.add(order1);
         list.add(order2);
