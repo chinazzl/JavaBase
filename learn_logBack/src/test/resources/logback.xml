@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<configuration>
+<configuration debug="true">
      <!--   
        日志输出格式：
        %-5level 表示从左显示5个字符宽度
@@ -32,6 +32,23 @@
         </encoder>
     </appender>
     <!-- 使用roll-file 进行日志拆分和压缩 -->
+    <appender name="sift" class="ch.qos.logback.classic.sift.SiftingAppender">
+<!--  discriminator鉴别器 ，根据taskId这个key对应的value 鉴别日志事件，然后委托给具体appender写日志 -->
+        <discriminator>
+            <key>taskId</key>
+            <defaultValue>default</defaultValue>
+        </discriminator>
+        <sift>
+<!--            具体的写日志appender，每一个taskId创建一个文件-->
+            <appender name="File-${taskId}" class="ch.qos.logback.core.FileAppender">
+                <file>${filePath}/logback-${taskId}.log</file>
+                <append>true</append>
+                <encoder charset="UTF-8">
+                    <pattern>[%d]{yyyy-MM-dd HH:mm:ss:SSS} %-5level %logger{35} -%msg%n</pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
     <appender name="rollFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 日志格式配置 -->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -56,5 +73,6 @@
     <root level="ALL">
         <appender-ref ref="console"/>
         <appender-ref ref="rollFile"/>
+        <appender-ref ref="sift"/>
     </root>
 </configuration>
