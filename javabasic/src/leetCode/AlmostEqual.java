@@ -9,8 +9,19 @@ package leetCode;
  * 如果对 其中一个字符串 执行最多一次字符串交换 就可以使两个字符串相等，返回 true ；否则，返回 false 。
  **********************************/
 public class AlmostEqual {
-
-    public boolean areAlmostEqual(String s1, String s2) {
-return true;
+    public static void main(String[] args) {
+        System.out.println(areAlmostEqual("bank", "kanb"));
+    }
+    public static boolean areAlmostEqual(String s1, String s2) {
+        int count = 0;
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i)) {
+                count++;
+            }
+            if (count >= s1.length() / 2) {
+                return false;
+            }
+        }
+        return true;
     }
 }
