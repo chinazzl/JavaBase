@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -126,5 +127,43 @@ public class CpuBaseline {
         System.out.println(Math.round(9.12));
         System.out.println(String.format("%.2d", 9.12));
         System.out.println(String.format("%.2d", 9.52));
+    }
+
+    /**
+     * 滑动窗口算法
+     */
+    @Test
+    public void slidingWindowAL() {
+        double[] nums = {9.18, 9.64, 8.53, 9.25, 9.01, 9.35, 9.48, 6.62, 6.26, 5.37, 6.97, 9.02, 7.13, 6.57, 9.03, 9.65,
+                9.50, 9.91, 7.24, 5.65, 7.72, 9.73, 6.98, 9.94};
+        double[] doubles = slidingWindows(nums, 3);
+        for (int i = 0; i < doubles.length; i++) {
+            System.out.println(doubles[i]);
+        }
+    }
+
+    private double[] slidingWindows(double[] nums, int k) {
+        int right = 0;
+        double[] res = new double[nums.length - k + 1];
+        int index = 0;
+        LinkedList<Double> list = new LinkedList<>();
+        // 开始构造窗口
+        while (right < nums.length) {
+            while (!list.isEmpty() && nums[right] > list.peekLast()) {
+                list.removeLast();
+            }
+            // 不断添加
+            list.addLast(nums[right]);
+            right++;
+            // 构造完成，这时候需要根据条件做一些操作
+            if (right >= k) {
+                res[index++]= list.peekFirst();
+                // 如果发现第一个已经在窗口外面则移除
+                if (list.peekFirst() == nums[right - k]) {
+                    list.removeFirst();
+                }
+            }
+        }
+        return res;
     }
 }
