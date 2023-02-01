@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**********************************
@@ -102,68 +103,68 @@ public class CpuBaseline {
         // 移除不需要的样本数据，在这里只需要后三个的区间的数据作为样本数据
         cpuDatas.removeAll(collect);
         // 滑动窗口，分别计算1~24  2~25 3~ 26 以此类推的标准差
-        List<Double> window = cpuDatas.stream().limit(24).collect(Collectors.toList());
-        // 开始计算标准差 TODO 需要滑动窗口计算
-        Double reduce = window.stream().reduce(0.0, Double::sum);
-        // 计算平均数
-        double avg = reduce / window.size();
-        // 保留三位小数
-        BigDecimal b = new BigDecimal(String.valueOf(avg));
-        double round_avg = b.setScale(3, RoundingMode.HALF_UP).doubleValue();
-        double sum = 0.0;
-        for (Double d : window) {
-            sum += roundDouble(Math.pow((d - round_avg), 2), 3);
+        // 开始计算标准差
+        // Double reduce = window.stream().reduce(0.0, Double::sum);
+        // 设置置信度为0.8
+        double confidence = 0.8;
+        // 获取滑动窗口的数据采纳个数
+        double sampleSize = cpuDatas.size() * confidence;
+        // 滑动窗口的计算后的数据集合
+        List<Double[]> windowsData = slidingWindows(cpuDatas.toArray(new Double[0]), (int) sampleSize);
+        List<Double> deviations = new ArrayList<Double>();
+        for (Double[] window : windowsData) {
+            // 计算平均数
+            double avg = (Arrays.stream(window).reduce(Double::sum).orElse(0.0)) / sampleSize;
+            // 保留三位小数
+            BigDecimal b = new BigDecimal(String.valueOf(avg));
+            double round_avg = b.setScale(4, RoundingMode.HALF_UP).doubleValue();
+            double sum = 0.0;
+            for (Double d : window) {
+                sum += roundDouble(Math.pow((d - round_avg), 2), 3);
+            }
+            // 获取每一个区间的标准差
+            double deviation = Math.sqrt(sum / (window.length - 1));
+            deviations.add(deviation);
         }
-        double deviatioin = Math.sqrt(sum / (window.size() - 1));
-        System.out.println(roundDouble(deviatioin, 3));
+        // 取出最小的标准差作为当前时间的基线值。
+        Integer baseline_Index = deviations.stream().min(Double::compareTo).map(d -> deviations.indexOf(d)).get();
+        Double baseline_Down = Arrays.stream(windowsData.get(baseline_Index)).min(Double::compareTo).get();
+        Double baseline_Up = Arrays.stream(windowsData.get(baseline_Index)).max(Double::compareTo).get();
+
+        System.out.println("下基线是：" + baseline_Down + "，上基线是：" + baseline_Up);
     }
 
     /**
-     * =================================================================
-     * 测试
-     */
-    @Test
-    public void testNum() {
-        System.out.println(Math.round(9.12));
-        System.out.println(String.format("%.2d", 9.12));
-        System.out.println(String.format("%.2d", 9.52));
-    }
-
-    /**
-     * 滑动窗口算法
+     * 滑动窗口算法 测试
      */
     @Test
     public void slidingWindowAL() {
-        double[] nums = {9.18, 9.64, 8.53, 9.25, 9.01, 9.35, 9.48, 6.62, 6.26, 5.37, 6.97, 9.02, 7.13, 6.57, 9.03, 9.65,
-                9.50, 9.91, 7.24, 5.65, 7.72, 9.73, 6.98, 9.94};
-        double[] doubles = slidingWindows(nums, 3);
-        for (int i = 0; i < doubles.length; i++) {
-            System.out.println(doubles[i]);
-        }
+        Double[] nums = {9.18, 9.64, 8.53, 9.25, 9.01, 9.35, 9.48, 6.62, 6.26, 5.37, 6.97, 9.02, 7.13, 6.57, 9.03, 9.65,
+                9.50, 9.91, 7.24, 5.65, 7.72, 9.73, 6.98, 9.94, 8.36, 6.66, 8.93, 5.90, 9.31, 7.20};
+        slidingWindows(nums, 24);
     }
 
-    private double[] slidingWindows(double[] nums, int k) {
+    private List<Double[]> slidingWindows(Double[] nums, int k) {
         int right = 0;
-        double[] res = new double[nums.length - k + 1];
+        // double[] res = new double[nums.length - k + 1];
+        List<Double[]> resList = new ArrayList<Double[]>();
         int index = 0;
         LinkedList<Double> list = new LinkedList<>();
         // 开始构造窗口
         while (right < nums.length) {
-            while (!list.isEmpty() && nums[right] > list.peekLast()) {
-                list.removeLast();
-            }
             // 不断添加
             list.addLast(nums[right]);
             right++;
             // 构造完成，这时候需要根据条件做一些操作
             if (right >= k) {
-                res[index++]= list.peekFirst();
+                // res[index++]= list.peekFirst();
+                resList.add(list.toArray(new Double[0]));
                 // 如果发现第一个已经在窗口外面则移除
                 if (list.peekFirst() == nums[right - k]) {
                     list.removeFirst();
                 }
             }
         }
-        return res;
+        return resList;
     }
 }
