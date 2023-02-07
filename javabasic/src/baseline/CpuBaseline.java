@@ -64,7 +64,7 @@ public class CpuBaseline {
         // 采集一个ip 一个月内的当前时间同一时刻的cpu使用率的性能数据。
         // Double[] doubles = new Double[]{9.18, 9.64, 8.53, 9.25, 9.01, 9.35, 9.48, 6.62, 6.26, 5.37, 6.97, 9.02, 7.13, 6.57, 9.03,
         //         9.65, 9.50, 9.91, 7.24, 5.65, 7.72, 9.73, 6.98, 9.94, 8.36, 6.66, 8.93, 5.90, 9.31, 7.20, 0.12, 2.32};
-        Double[] doubles = CPUsage.cpu_226_77_0935;
+        Double[] doubles = CPUsage.cpu_218_193_0045;
         List<Double> c1 = Arrays.asList(doubles);
         List<Double> cpuDatas = new ArrayList<>(c1);
         // 获取这段时间性能数据的最大值
@@ -77,11 +77,11 @@ public class CpuBaseline {
             int start = 0, rangeName = 1;
             double rangeStart = 0.0;
             while (rangeStart < Math.ceil(maxCPU)) {
-                if (cpu >= rangeStart && cpu <= (int) (rangeStart + v)) {
+                if (cpu >= rangeStart + 0.01 && cpu <= (int) (rangeStart + v)) {
                     rangeMap.put(String.valueOf(rangeName), cpu);
                     break;
                 }
-                rangeStart = rangeStart + v + 0.01;
+                rangeStart = rangeStart + v;
                 rangeName++;
             }
         }
@@ -89,7 +89,7 @@ public class CpuBaseline {
         // 获取样本数据，取分布不同区间数据量最多的前三个区间数据作为样本区间
         List<Double> collect = rangeMap.asMap().entrySet().stream().map(m -> m.getValue())
                 .sorted(Comparator.comparingInt(Collection::size))
-                .limit((int)Math.floor(rangeMap.asMap().size() >> 1)).flatMap(c -> c.stream()).collect(Collectors.toList());
+                .limit((int) Math.floor(rangeMap.asMap().size() >> 1)).flatMap(c -> c.stream()).collect(Collectors.toList());
         // 移除不需要的样本数据，在这里只需要后三个的区间的数据作为样本数据
         cpuDatas.removeAll(collect);
         // 滑动窗口，分别计算1~24  2~25 3~ 26 以此类推的标准差
@@ -116,7 +116,7 @@ public class CpuBaseline {
             double deviation = Math.sqrt(sum / (window.length - 1));
             deviations.add(deviation);
         }
-        // 取出最小的标准差作为当前时间的基线值。
+        // 取出最小的标准差作为当前时间的基线标准。
         Integer baseline_Index = deviations.stream().min(Double::compareTo).map(d -> deviations.indexOf(d)).get();
         Double baseline_Down = Arrays.stream(windowsData.get(baseline_Index)).min(Double::compareTo).get();
         Double baseline_Up = Arrays.stream(windowsData.get(baseline_Index)).max(Double::compareTo).get();
