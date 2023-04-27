@@ -1,12 +1,15 @@
 package leetCode;
 
-/**********************************
- * @author zhang zhao lin
- * @date 2023年04月26日 22:30
+/**
+ * @author Julyan
+ * @version V1.0
+ * @Date: 2023/4/26 8:55
  * @Description: 给你一个整数数组 nums 和两个整数 firstLen 和 secondLen，请你找出并返回两个非重叠 子数组 中元素的最大和，长度分别为 firstLen 和 secondLen 。
  * 长度为 firstLen 的子数组可以出现在长为 secondLen 的子数组之前或之后，但二者必须是不重叠的。
  * 子数组是数组的一个 连续 部分。
- **********************************/
+ * 使用算法中的“前缀和”
+ *
+ */
 public class Leetcode1031 {
 
     public static void main(String[] args) {
@@ -31,7 +34,25 @@ public class Leetcode1031 {
      * @param secondLen
      * @return
      */
-    public static int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+    static int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
 
+        return 0;
     }
+
+    /**
+     * 实现一个滑动窗口
+     * @param nums
+     * @param slideNum
+     * @return
+     */
+    private static int slideWindow(int[] nums, int slideNum) {
+        int mv = 0;
+        while (mv < nums.length) {
+            
+            mv += slideNum;
+
+        }
+        return 0;
+    }
+
 }

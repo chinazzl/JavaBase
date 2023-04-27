@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**********************************
  * @author zhang zhao lin
  * @date 2023年04月25日 22:18
- * @Description:
+ * @Description: 使用选择排序实现了
  * 给你一个字符串数组 names ，和一个由 互不相同 的正整数组成的数组 heights 。两个数组的长度均为 n 。
  * <p></p>
  * 对于每个下标 i，names[i] 和 heights[i] 表示第 i 个人的名字和身高。
