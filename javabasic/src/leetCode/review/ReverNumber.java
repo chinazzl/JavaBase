@@ -1,4 +1,4 @@
-package leetCode;
+package leetCode.review;
 
 
 import java.lang.reflect.Array;

@@ -23,4 +23,8 @@ public class TestLog4j {
         logger.error("error");
         logger.debug("debug");
     }
+
+    @Test
+    public void test2(){
+    }
 }

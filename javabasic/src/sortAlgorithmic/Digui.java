@@ -8,8 +8,6 @@ public class Digui {
     public static void main(String[] args) {
         System.out.println("吓得我抱起了");
         digui(2);
-//        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-//        service.scheduleWithFixedDelay(new Thread(),0,1, TimeUnit.SECONDS);
     }
 
     private static void digui(int i){

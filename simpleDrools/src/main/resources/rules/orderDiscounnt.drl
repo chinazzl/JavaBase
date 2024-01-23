@@ -46,7 +46,7 @@ end
 rule "handLeList"
 when
     $l:List(size()>0);
-    $oder:Order() from $l;
+    $oder:Order(originalPrice > 200) from $l;
 then
     System.out.println($oder.getOriginalPrice());
  end

@@ -279,13 +279,12 @@ public class CpuBaseline {
         Double[] d = new Double[ds.size()];
         Iterator<Double> iterator = ds.iterator();
         int i = 0;
-        while (iterator.hasNext() && !ds.isEmpty()) {
+        while (iterator.hasNext()) {
             Double next = iterator.next();
-            if (next > close) {
-                ranger(container, ds, k, ++start, k * start);
-            } else {
-                d[i++] = next;
-                iterator.remove();
+            d[i++] = next;
+            iterator.remove();
+            if (next >=  k) {
+                //ranger(container, ds, 2 * k);
             }
         }
         Double[] doubles = Stream.of(d).filter(Objects::nonNull).toArray(Double[]::new);

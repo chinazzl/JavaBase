@@ -1,4 +1,4 @@
-package leetCode;
+package leetCode.review;
 
 /**********************************
  * @author zhang zhao lin

@@ -21,7 +21,7 @@ public class ConsumerTest {
     private static final KafkaConsumer<String, String> consumer;
 
     static {
-        properties.put("bootstrap.servers", "192.168.226.134:9092");
+        properties.put("bootstrap.servers", "192.168.43.201:9092");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("group.id", "test");

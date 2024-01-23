@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class FutureSimple2 {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        testIsDone();
-        testCancel();
+        testIsDone();
+//        testCancel();
     }
 
     /**
@@ -27,17 +27,21 @@ public class FutureSimple2 {
     private static void testIsDone() throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newCachedThreadPool();
         Future<Integer> future = executorService.submit(() -> {
-           /* try {
+            try {
                 TimeUnit.SECONDS.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return 10;*/
-            throw new RuntimeException("执行出现异常也会调用isDone成功。");
+            return 10;
+            //throw new RuntimeException("执行出现异常也会调用isDone成功。");
         });
         try {
             Integer result = future.get();
             System.out.println(result);
+            //while (!future.isDone()) {
+            //    System.out.println("阻塞中");
+            //}
+            //System.out.println(future.get());
         } catch (Exception e) {
             //  is Done >true
             System.out.println(" is Done >" + future.isDone());

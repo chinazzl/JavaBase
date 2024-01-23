@@ -57,7 +57,7 @@ public class CompletableFutureCombieAPI {
      * 两个Future, 两个Future返回数据进行处理,并且处理完成逻辑
      */
     private static void testCombine() {
-        CompletableFuture.supplyAsync(() -> {
+        /*CompletableFuture.supplyAsync(() -> {
             System.out.println("===== testThenCombine 1");
             try {
                 TimeUnit.SECONDS.sleep(5);
@@ -75,7 +75,29 @@ public class CompletableFutureCombieAPI {
             }
             System.out.println("====testThenCombine end 2");
             return 1000;
-        }), (d1, d2) -> d1.length() > d2).whenComplete((v, t) -> System.out.println(v + " === DONE"));
+        }), (d1, d2) -> d1.length() > d2).whenComplete((v, t) -> System.out.println(v + " === DONE"));*/
+        String re = "";
+        CompletableFuture<String> stringCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            System.out.println("===== testThenCombine 1");
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("====testThenCombine end 1 ");
+            return "Hello World";
+        }).thenCombine(CompletableFuture.supplyAsync(() -> {
+            System.out.println("===== testThenCombine 2");
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("====testThenCombine end 2");
+            return 1000;
+        }), (d1, d2) -> {
+            return d1 + d2;
+        });
     }
 
     /**

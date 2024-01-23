@@ -2,6 +2,7 @@ package com.wwj_concurrent.level3.executeservice;
 
 import java.util.Random;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -15,8 +16,12 @@ public class ScheduledExecutorServiceSimple {
     private static final Random random = new Random(System.currentTimeMillis());
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        testSchedule();
-        testScheduleExecutorDelay();
+        //testSchedule();
+//        testScheduleExecutorDelay();
+        ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
+        for (int i = 0; i < 4; i++) {
+            testScheduleAtFixedRate(scheduledExecutorService);
+        }
     }
 
     private static void testSchedule() throws ExecutionException, InterruptedException {
@@ -25,20 +30,22 @@ public class ScheduledExecutorServiceSimple {
         // runnable
         scheduledExecutorService.schedule(() -> System.out.println("After 2 seconds print this. "), 2, TimeUnit.SECONDS);
         // callable
-        ScheduledFuture<Integer> scheduledFuture = scheduledExecutorService.schedule(() -> 10, 2, TimeUnit.SECONDS);
-        System.out.println(scheduledFuture.get());
+        //ScheduledFuture<Integer> scheduledFuture = scheduledExecutorService.schedule(() -> 10, 2, TimeUnit.SECONDS);
+        //System.out.println(scheduledFuture.get());
+
     }
 
-    private static void testScheduleAtFixedRate() {
-        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
+    private static void testScheduleAtFixedRate(ScheduledThreadPoolExecutor scheduledExecutorService) {
 
         /*
             当任务处理时间大于定时任务规定时间，依然会等上一个任务执行后再执行，延续Timer类
          */
         AtomicLong atomicLong = new AtomicLong(0);
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
+        AtomicInteger atomicInteger = new AtomicInteger(0);
+        scheduledExecutorService.scheduleAtFixedRate(()-> {
             long currentTimeMillis = System.currentTimeMillis();
             long interval = currentTimeMillis - atomicLong.get();
+            atomicInteger.incrementAndGet();
             if (atomicLong.get() == 0) {
                 System.out.println("trigger first running at " + currentTimeMillis);
                 atomicLong.set(currentTimeMillis);
@@ -53,6 +60,9 @@ public class ScheduledExecutorServiceSimple {
                 e.printStackTrace();
             }
             atomicLong.set(currentTimeMillis);
+            if (atomicInteger.get() > 3) {
+                scheduledExecutorService.remove(Thread.currentThread());
+            }
         }, 1, 2, TimeUnit.SECONDS);
     }
 

@@ -1,4 +1,4 @@
-package leetCode;
+package leetCode.review;
 
 import sortAlgorithmic.lianBiaoLinkedList.SingleLinkedList;
 

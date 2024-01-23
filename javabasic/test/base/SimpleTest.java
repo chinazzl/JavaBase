@@ -4,9 +4,10 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.junit.Test;
-import po.User;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
@@ -90,25 +91,6 @@ public class SimpleTest {
     }
 
     @Test
-    public void testStream() {
-        User u1 = new User("1-1", "1", "u1-1", "u1-1_123");
-        User u2 = new User("1-2", "1", "u1-2", "u1-2_123");
-        User u3 = new User("2-1", "2", "u2-1", "u2-1_123");
-        User u4 = new User("2-2", "2", "u2-2", "u2-2_123");
-        User u5 = new User("3-1", "3", "u3-1", "u3-1_123");
-        User u6 = new User("3-2", "3", "u3-2", "u3-2_123");
-        List<User> list = new ArrayList<>();
-        list.add(u1);
-        list.add(u3);
-        list.add(u2);
-        list.add(u4);
-        list.add(u5);
-        list.add(u6);
-        list.stream().filter(user -> "1".equals(user.getPid())).forEach(u -> u.setMessage("hahahha"));
-        System.out.println(list);
-    }
-
-    @Test
     public void testRanged() {
         ArrayList<Double> cpuDatas = Lists.newArrayList(5.0, 3.0, 1.1, 2.2, 6.6, 4.1, 7.1);
         // 获取这段时间性能数据的最大值
@@ -158,4 +140,48 @@ public class SimpleTest {
         }
     }
 
+
+    @Test
+    public void tetMapCapacity() throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Map<String,Integer> m = new HashMap<String,Integer>(4);
+        Class<? extends Map> aClass = m.getClass();
+        Method capacity = aClass.getDeclaredMethod("capacity");
+        capacity.setAccessible(true);
+        m.put("a", 1);
+        System.out.println("存入第一个元素的capacity" + capacity.invoke(m) + " size=" + m.size());
+        m.put("b", 1);
+        System.out.println("存入第二个元素的capacity" + capacity.invoke(m) + " size=" + m.size());
+        m.put("c", 1);
+        System.out.println("存入第三个元素的capacity" + capacity.invoke(m) + " size=" + m.size());
+        m.put("d", 1);
+        System.out.println("存入第四个元素的capacity" + capacity.invoke(m) + " size=" + m.size());
+    }
+
+    @Test
+    public void testAB() {
+        Egg e = new Egg();
+        e.haveNiceDinner("egg");
+    }
+
+    @Test
+    public void tesWhile() {
+        int page= 0;
+        while (page < 4) {
+            //page++;
+            int i = page++;
+            System.out.println(i);
+            System.out.println(page);
+        }
+    }
+
+    @Test
+    public void testPrivateCOnstruct() {
+
+    }
+
+    public static void main(String[] args) {
+        Map<String,String> m = new HashMap<String,String>();
+        m.put("a","bb");
+        System.out.println(m);
+    }
 }

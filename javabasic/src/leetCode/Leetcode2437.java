@@ -27,12 +27,4 @@ public class Leetcode2437 {
 
     }
 
-    public static int countTime(String time) {
-        char[] timeChars = time.toCharArray();
-        for (int i = 0; i < timeChars.length -1; i++) {
-            switch (timeChars[i]) {
-                case timeChars[i] == '?' &&timeChars[i +1]
-            }
-        }
-    }
 }

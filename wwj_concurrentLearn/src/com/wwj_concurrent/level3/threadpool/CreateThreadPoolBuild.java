@@ -45,11 +45,12 @@ public class CreateThreadPoolBuild {
          *
          */
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 4, 30, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(1), r -> {
+                new ArrayBlockingQueue<>(5), r -> {
             Thread t = new Thread(r);
+            t.setName("my-pool-executor");
             return t;
         }, new ThreadPoolExecutor.AbortPolicy());
-        threadPoolExecutor.submit(() -> sleepSeconds(100));
+        threadPoolExecutor.submit(() -> sleepSeconds(10));
         threadPoolExecutor.submit(() -> sleepSeconds(10));
         /*
             1. 当线程池提交任务少于核心线程池的时候，会创建一个新的线程
@@ -61,14 +62,14 @@ public class CreateThreadPoolBuild {
         // Task has full in thread pool. queue had full .
         threadPoolExecutor.submit(() -> sleepSeconds(10));
         // Task rejected from this thread pool
-//        threadPoolExecutor.submit(() -> sleepSeconds(10));
+        //threadPoolExecutor.submit(() -> sleepSeconds(10));
 
         return threadPoolExecutor;
     }
 
     private static void sleepSeconds(long seconds) {
         try {
-            System.out.println("* " + Thread.currentThread().getName() + " *");
+            System.out.println("* " + Thread.currentThread().getName() + " * sleep " + seconds);
             TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
