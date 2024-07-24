@@ -1,5 +1,7 @@
 package selfDefLock;
 
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -10,10 +12,28 @@ import java.util.stream.Stream;
  */
 public class BooleanLockTest {
     private final static  BooleanLock booleanLock = new BooleanLock();
-    public static void main(String[] args) {
-        Stream.of("T1","T2","T3","T4")
-                .map(name ->threadPool(name))
-                .forEach(Thread::start);
+    private static int num = 5;
+
+    public static void main(String[] args) throws InterruptedException {
+        IntStream.rangeClosed(0,5).boxed().forEach(i -> {
+            ConcurrentLock lock = new ConcurrentLock();
+            new Thread(() -> {
+                try {
+                    lock.lock(2000L,TimeUnit.SECONDS);
+                    if (num == 0) {
+                        System.out.println(Thread.currentThread().getName() + " num is 0");
+                    }
+                    num--;
+                }finally {
+                    lock.unlock();
+                }
+
+            }).start();
+        });
+        Thread.currentThread().join();
+        //Stream.of("T1","T2","T3","T4")
+        //        .map(name ->threadPool(name))
+        //        .forEach(Thread::start);
     /*    Stream.of("T1","T2","T3","T4")
                 .forEach(name -> {
                     new Thread(() -> {

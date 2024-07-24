@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="byte-buddy-1.6.5 (2)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/javabasic/lib/byte-buddy-1.6.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/javabasic/lib/byte-buddy-agent-1.6.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/javabasic/lib/objenesis-2.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -18,7 +18,7 @@ public class ProducerTest {
     static KafkaProducer<String, String> producer;
 
     static {
-        properties.put("bootstrap.servers", "192.168.226.134:9092");
+        properties.put("bootstrap.servers", "192.168.43.201:9092");
         properties.put("group.id", "test");
         properties.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");

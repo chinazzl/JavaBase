@@ -11,8 +11,23 @@ package level3.po;
 public class PClass {
 
     public String name ;
+    public Son son;
 
     public PClass() {
         name = "123";
+    }
+
+    public Son getSon() {
+        return son;
+    }
+    public void setSon(Son son) {
+        this.son = son;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

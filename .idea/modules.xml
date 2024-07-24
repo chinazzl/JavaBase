@@ -6,11 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/JavaCore_keygen/JavaCore_keygen.iml" filepath="$PROJECT_DIR$/JavaCore_keygen/JavaCore_keygen.iml" />
       <module fileurl="file://$PROJECT_DIR$/aboutspring/aboutspring.iml" filepath="$PROJECT_DIR$/aboutspring/aboutspring.iml" />
       <module fileurl="file://$PROJECT_DIR$/javabasic/javabasic.iml" filepath="$PROJECT_DIR$/javabasic/javabasic.iml" />
-      <module fileurl="file://$PROJECT_DIR$/learnLogger/learnLogger.iml" filepath="$PROJECT_DIR$/learnLogger/learnLogger.iml" />
-      <module fileurl="file://$PROJECT_DIR$/learn_logBack/learn_logBack.iml" filepath="$PROJECT_DIR$/learn_logBack/learn_logBack.iml" />
-      <module fileurl="file://$PROJECT_DIR$/shiroLearnRealm/shiroLearnRealm.iml" filepath="$PROJECT_DIR$/shiroLearnRealm/shiroLearnRealm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/simpleDrools/simpleDrools.iml" filepath="$PROJECT_DIR$/simpleDrools/simpleDrools.iml" />
-      <module fileurl="file://$PROJECT_DIR$/slf_Learn/slf_Learn.iml" filepath="$PROJECT_DIR$/slf_Learn/slf_Learn.iml" />
       <module fileurl="file://$PROJECT_DIR$/wwj_concurrentLearn/wwj_concurrentLearn.iml" filepath="$PROJECT_DIR$/wwj_concurrentLearn/wwj_concurrentLearn.iml" />
     </modules>
   </component>

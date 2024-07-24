@@ -1,9 +1,6 @@
 package leetCode.review;
 
-import sortAlgorithmic.lianBiaoLinkedList.SingleLinkedList;
-
-import java.util.LinkedList;
-import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * 给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
@@ -28,9 +25,18 @@ import java.util.List;
 
  */
 public class TwoNumPlus {
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+       ListNode node = new ListNode(2);
+       node.next = new ListNode(4);
+       node.next.next = new ListNode(3);
+        ListNode node1 = new ListNode(5);
+        node1.next = new ListNode(6);
+        node1.next.next = new ListNode(4);
+        System.out.println(addTwoNumbers(node, node1));
 
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    }
+
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode pre = new ListNode(0);
         ListNode cur = pre;
         int carry = 0;
@@ -56,11 +62,22 @@ public class TwoNumPlus {
         return pre.next;
     }
 
-    private class ListNode {
+    public static class ListNode {
         int data;
         ListNode next;
         public ListNode(int data) {
             this.data = data;
+        }
+
+        public ListNode(){}
+
+        @Override
+        public String toString() {
+            StringJoiner stringBuilder = new StringJoiner(",");
+            while (this.next != null) {
+                stringBuilder.add(String.valueOf(this.data));
+            }
+            return stringBuilder.toString();
         }
     }
 }

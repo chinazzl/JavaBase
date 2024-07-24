@@ -22,4 +22,21 @@ public class TestMe {
         System.out.println(o);
     }
 
+    @Test
+    public void testClass() {
+        Son son = new Son();
+        son.setName("son");
+        PClass p = new PClass();
+        p.setName("p1");
+        p.setSon(son);
+        System.out.println("================================");
+
+        Son son1 = p.getSon();
+        son1.setName("fff");
+        System.out.println(p.getName());
+
+        System.out.println(p.getSon().getName());
+
+    }
+
 }
