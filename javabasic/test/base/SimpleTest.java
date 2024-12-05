@@ -31,6 +31,7 @@ import java.util.stream.IntStream;
  * @Description:
  * @Date: 2021/10/19 10:46
  */
+
 public class SimpleTest {
 
     @Test
@@ -179,9 +180,20 @@ public class SimpleTest {
 
     }
 
-    public static void main(String[] args) {
-        Map<String,String> m = new HashMap<String,String>();
-        m.put("a","bb");
-        System.out.println(m);
+    @Test
+    public void testParseLong() {
+        String sql = "SELECT * FROM TABLE WHERE NAME IS NULL AND PASSWORD IS NULL";
+        String[] split = sql.split("(?i)where");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < split.length -1; i++) {
+            if (i != split.length - 2) {
+                sb.append(split[i] + " where ");
+            } else {
+                sb.append(split[i]);
+            }
+        }
+
+        System.out.println(sb);
+
     }
 }

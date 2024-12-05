@@ -28,6 +28,13 @@ public class LeetCode0002 {
             this.next = next;
             this.val = val;
         }
+
+        public int getValue() {
+            return val;
+        }
+        public void setValue(int val) {
+            this.val = val;
+        }
     }
 
 }
