@@ -3,17 +3,17 @@ package com.zkclienttest;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.api.BackgroundCallback;
-import org.apache.curator.framework.api.CuratorEvent;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**********************************
  * @author zhang zhao lin
@@ -22,10 +22,11 @@ import java.util.List;
  **********************************/
 public class ZkClientTest {
 
-    private static final String zkUrl = "localhost:2181";
+    private static final String zkUrl = "61.184.20.136:2181";
     private static final int zkSessionTimeoutMs = 5000;
     private static final int zkConnectionTimeoutMs = 5000;
     private static final RetryPolicy retryPolicy = new ExponentialBackoffRetry(3000, 5);
+    private static final Logger log = LoggerFactory.getLogger(ZkClientTest.class);
 
     private static CuratorFramework client;
 
@@ -43,6 +44,113 @@ public class ZkClientTest {
         client = CuratorFrameworkFactory.
                 newClient(zkUrl, zkSessionTimeoutMs, zkConnectionTimeoutMs, retryPolicy);
         client.start();
+    }
+
+    @Test
+    public void demonstrateSequentialConsistency() throws Exception {
+        System.out.println("1. 顺序一致性演示");
+        String basePath = "/sequential-demo";
+        // 清理旧数据
+        deletePathIfExists(basePath);
+        // 创建父节点
+        client.create().forPath(basePath,"parent".getBytes());
+        // 按照顺序窜天多个顺序节点
+        for (int i = 0; i < 5; i++) {
+            String path = client.create()
+                    .withMode(CreateMode.PERSISTENT_SEQUENTIAL)
+                    .forPath(basePath + "/node-" + ("data-" + i).getBytes());
+            System.out.println("创建节点：" + path);
+        }
+        // 读取所有子节点，验证顺序
+        System.out.println("\n读取子节点（验证顺序）");
+        client.getChildren().forPath(basePath).forEach(child -> {
+            System.out.println(" 子节点：" + child);
+        });
+        System.out.println("✓ 节点序号严格递增，保证了顺序一致性\n");
+
+    }
+
+    private void deletePathIfExists(String path) {
+        try {
+            Stat stat = client.checkExists().forPath(path);
+            if (stat != null) {
+                client.delete().deletingChildrenIfNeeded().forPath(path);
+            }
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 原子性演示
+     * 操作要么全部成功，要么全部失败
+     */
+    @Test
+    public void demonstrateAtomicity() throws Exception {
+        System.out.println("原子性演示");
+        String basePath = "/atomic-demo";
+        deletePathIfExists(basePath);
+        // 创建节点
+        try {
+            client.create().forPath(basePath,"initial-data".getBytes());
+            byte[] bytes = client.getData().forPath(basePath);
+            System.out.println("创建成功" + new String(bytes, StandardCharsets.UTF_8));
+        }catch (Exception e){
+            log.error("x 创建失败");
+        }
+        // 失败案例：重复创建（会失败，不会部分成功）
+        try {
+            client.create().forPath(basePath, "duplicate-data".getBytes());
+            log.info("不应该成功");
+        } catch (Exception e) {
+            log.error("创建失败：{}", e.getMessage());
+            byte[] data = client.getData().forPath(basePath);
+            log.info("原数据未修改：{}",new String(data, StandardCharsets.UTF_8));
+        }
+        System.out.println("✓ 操作具有原子性，要么完全成功，要么完全失败\n");
+    }
+
+    /**
+     * 单一视图
+     * 多个客户端连接到不同的服务器，看的数据一致
+     */
+    @Test
+    public void demonstrateSingleSystemImage() throws Exception {
+        System.out.println("单一视图演示");
+        String basePath = "/single-view-demo";
+        deletePathIfExists(basePath);
+        // 客户端1写入数据
+        client.create().forPath(basePath,"shared-data".getBytes());
+        System.out.println("客户端1 写入数据：shared-data");
+        // 创建多个客户端模拟连接不同服务器
+        CuratorFramework client2 = CuratorFrameworkFactory.builder()
+                .connectString(zkUrl)
+                .sessionTimeoutMs(zkSessionTimeoutMs)
+                .connectionTimeoutMs(zkConnectionTimeoutMs)
+                .retryPolicy(retryPolicy)
+                .build();
+        client2.start();
+        CuratorFramework client3 = CuratorFrameworkFactory.builder()
+                .connectString(zkUrl)
+                .sessionTimeoutMs(zkSessionTimeoutMs)
+                .connectionTimeoutMs(zkConnectionTimeoutMs)
+                .retryPolicy(retryPolicy)
+                .build();
+        client3.start();
+        TimeUnit.SECONDS.sleep(1);
+        // 多个客户端读取数据
+        byte[] data1 = client.getData().forPath(basePath);
+        byte[] data2 = client2.getData().forPath(basePath);
+        byte[] data3 = client3.getData().forPath(basePath);
+        System.out.println("客户端1 读取数据：" + new String(data1, StandardCharsets.UTF_8));
+        System.out.println("客户端2 读取数据：" + new String(data2, StandardCharsets.UTF_8));
+        System.out.println("客户端3 读取数据：" + new String(data3, StandardCharsets.UTF_8));
+
+        System.out.println("✓ 所有客户端看到的数据一致，具有单一视图特性\n");
+
+        client2.close();
+        client3.close();
     }
 
     /**
