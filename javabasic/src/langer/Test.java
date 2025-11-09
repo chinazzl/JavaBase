@@ -1,6 +1,8 @@
 package langer;
 
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Felix on 2017/8/4.
@@ -45,4 +47,22 @@ public class Test {
         str = "s1";
         System.out.println(str);
     }
+
+    /**
+     * 校验文本是否是有效的正则表达式
+     * @param regex 待校验的文本
+     * @return true-有效的正则表达式，false-无效的正则表达式
+     */
+    public static boolean isValidRegex(String regex) {
+        if (regex == null) {
+            return false;
+        }
+        try {
+            Pattern.compile(regex);
+            return true;
+        } catch (PatternSyntaxException e) {
+            return false;
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.wwj_concurrent.level3.future.comparblefuture;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
@@ -34,9 +35,12 @@ public class SimpleComparableFuture {
             }
         }).forEach(SimpleComparableFuture::display);*/
         // 使用CompletableFuture
-        IntStream.range(0, 10).boxed().forEach(i -> CompletableFuture.supplyAsync(SimpleComparableFuture::get)
-                .thenAccept(SimpleComparableFuture::display)
-                .whenComplete((v, t) -> System.out.println(i + " be done")));
+        //IntStream.range(0, 10).boxed().forEach(i -> CompletableFuture.supplyAsync(SimpleComparableFuture::get)
+        //        .thenAccept(SimpleComparableFuture::display)
+        //        .whenComplete((v, t) -> System.out.println(i + " be done")));
+        List<Integer> integers = testFultureEx();
+        System.out.println(integers);
+
 
         Thread.currentThread().join();
     }
@@ -57,12 +61,12 @@ public class SimpleComparableFuture {
      */
     private static void simpleComparableFuture() {
         CompletableFuture.runAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        })
+                    try {
+                        TimeUnit.SECONDS.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                })
                 // 当完成的时候调用，v: 执行过程产生的result；t: 执行过程中产生的异常
                 .whenComplete((v, t) -> {
                     System.out.println(" I will done");
@@ -86,5 +90,33 @@ public class SimpleComparableFuture {
             e.printStackTrace();
         }
         return value;
+    }
+
+    private static List<Integer> testFultureEx() {
+        List<Integer> result = new ArrayList<>();
+
+        List<CompletableFuture<Integer>> list = new ArrayList<>();
+        IntStream.rangeClosed(0, 3).forEach(value -> {
+            CompletableFuture<Integer> integerCompletableFuture = CompletableFuture.supplyAsync(SimpleComparableFuture::get);
+            list.add(integerCompletableFuture);
+        });
+
+        list.forEach(f -> f.whenComplete((v, t) -> {
+            if (t == null) {
+                result.add(v);
+            }else  {
+                System.out.println(t.getMessage());
+            }
+        }));
+        System.out.println(result);
+        //for (CompletableFuture<Integer> integerCompletableFuture : list) {
+        //    try {
+        //        Integer i = integerCompletableFuture.get(5, TimeUnit.SECONDS);
+        //        result.add(i);
+        //    }catch (Exception e){
+        //        System.out.println("future执行失败");
+        //    }
+        //}
+        return result;
     }
 }

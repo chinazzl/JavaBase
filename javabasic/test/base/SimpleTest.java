@@ -3,6 +3,8 @@ package base;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import dataStructure.linked.Node;
+import dataStructure.linked.OddIncreaseEvenDecrease;
 import org.junit.Test;
 
 import java.io.*;
@@ -13,6 +15,8 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -194,6 +198,41 @@ public class SimpleTest {
         }
 
         System.out.println(sb);
+    }
 
+    @Test
+    public void testDateTimeByZone() {
+        String dateStr = "2025-02-20 09:20:02 CST";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z")
+                .withZone(ZoneId.of("Asia/Shanghai"));
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateStr, dateTimeFormatter);
+        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+        String format = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println(format);
+    }
+
+    @Test
+    public void testReverseLinked() {
+        Node initList = OddIncreaseEvenDecrease.createTestList();
+        Node pre = null;
+        Node cur = initList;
+        while (cur != null) {
+            // 保留下一个节点
+            Node next = cur.getNext();
+            // 当前节点指向上一个节点
+            cur.setNext(pre);
+            // 移动指针，将当前节点设置为上一个节点
+            pre = cur;
+            // 移动指针，下一个节点设置位当前节点
+            cur = next;
+        }
+
+        while (pre != null) {
+            System.out.printf("%d",pre.getData());
+            if (pre.getNext() != null) {
+                System.out.printf("%s","->");
+            }
+            pre =  pre.getNext();
+        }
     }
 }

@@ -1,4 +1,4 @@
-JUC 并发包
+# JUC 并发包
 
 1. CountDownLatch 门阀：多个线程 都就位后 getCount() == 0 后 进行下面的操作。
 2. CyclicBarrier 屏障：多个线程启动 都执行到await() 后，再统一做其他事情
